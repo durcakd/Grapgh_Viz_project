@@ -13,7 +13,7 @@ class Node
 
 public:
 	Node();
-
+	void draw();
 
 protected:
 	virtual void drawMe() const = 0;

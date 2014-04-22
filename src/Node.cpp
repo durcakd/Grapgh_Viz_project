@@ -6,12 +6,18 @@ Node::Node()
 
 }
 
+void Node::draw()
+{
+	drawMe();
+	drawChildren();
+}
+
 void Node::drawChildren()
 {
 	NodeList::const_iterator it;
 
 	for( it = _children.cbegin(); it != _children.cend(); it++ ){
-		(*it)->drawMe();
+		(*it)->draw();
 	}
 
 }
