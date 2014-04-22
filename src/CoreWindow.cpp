@@ -2,12 +2,14 @@
 #include "CoreGLWidget.h"
 
 
-CoreWindow::CoreWindow(QWidget *parent)
+CoreWindow::CoreWindow(QGLWidget *glWidget, QWidget *parent)
 	: QMainWindow(parent)
 {
 
-	mCoreGLWidget = new CoreGLWidget(this);
-	this->setCentralWidget( mCoreGLWidget );
+	glWidget->setParent( this );
+	setCentralWidget( glWidget );
+
+	_coreGLWidget = glWidget;
 }
 
 void CoreWindow::createMenus()

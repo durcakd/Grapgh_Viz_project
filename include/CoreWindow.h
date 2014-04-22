@@ -3,14 +3,15 @@
 
 #include <QMainWindow>
 
-class CoreGLWidget;
+
+class QGLWidget;
 
 class CoreWindow : public QMainWindow
 {
 	Q_OBJECT        // must include this if you use Qt signals/slots
 
 public:
-	CoreWindow(QWidget *parent = NULL);
+	CoreWindow( QGLWidget *glWidget, QWidget *parent = NULL);
 
 protected:
 
@@ -19,7 +20,7 @@ protected:
 
 private:
 
-	CoreGLWidget *mCoreGLWidget;
+	QGLWidget *_coreGLWidget;
 
 };
 
