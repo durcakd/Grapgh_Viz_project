@@ -2,13 +2,15 @@
 #define COREGLWIDGET_H
 
 #include <QGLWidget>
+#include "CoreDrawer.h"
+
 
 class CoreGLWidget : public QGLWidget
 {
 	Q_OBJECT        // must include this if you use Qt signals/slots
 
 public:
-	CoreGLWidget(QWidget *parent);
+	CoreGLWidget(CoreDrawer *coreDrawer, QWidget *parent = NULL);
 
 protected:
 
@@ -17,6 +19,10 @@ protected:
 	void resizeGL(int w, int h);
 
 	void paintGL();
+
+
+private:
+	CoreDrawer *_coreDrawer;
 
 };
 

@@ -1,9 +1,9 @@
 #include "CoreGLWidget.h"
 
-CoreGLWidget::CoreGLWidget(QWidget *parent)
+CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	: QGLWidget(parent)
 {
-
+	_coreDrawer = coreDrawer;
 }
 
 
