@@ -1,8 +1,10 @@
 #include "Node.h"
 
+#include <QDebug>
+
 Node::Node()
 {
-
+qDebug() << "Node constructor";
 
 }
 
@@ -14,6 +16,8 @@ void Node::draw()
 
 void Node::drawChildren()
 {
+	//qDebug() << "Node drawChildren";
+
 	NodeList::const_iterator it;
 
 	for( it = _children.cbegin(); it != _children.cend(); it++ ){
@@ -41,3 +45,4 @@ bool Node::hasChildren() const
 {
 	return ! _children.empty();
 }
+

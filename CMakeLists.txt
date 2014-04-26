@@ -21,13 +21,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 ### Qt4
 find_package(Qt4 REQUIRED)
 
-
 # autogenerate all moc files
 set( CMAKE_AUTOMOC TRUE )
 add_definitions(${QT_DEFINITIONS})
 set(QT_USE_QMAIN true)
 SET(QT_USE_QTOPENGL TRUE)
 include(${QT_USE_FILE})
+
+
+### OpenGL
+find_package(OpenGL REQUIRED)
+if(NOT OPENGL_FOUND)
+    message(ERROR " OPENGL not found!")
+endif(NOT OPENGL_FOUND)
+
 
 # ============================================
 ### Source files
@@ -59,6 +66,7 @@ add_executable(${PROJECT_NAME} ${SRCS} )
 target_link_libraries( ${PROJECT_NAME}
     ${QT_LIBRARIES}
     ${QT_QTMAIN_LIBRARY}
+    ${OPENGL_LIBRARIES}
 )
 
 #aux_source_directory(. SRC_LIST)

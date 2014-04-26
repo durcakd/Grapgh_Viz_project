@@ -4,6 +4,7 @@
 #include <QGLWidget>
 #include "CoreDrawer.h"
 
+#include <QVector3D>
 
 class CoreGLWidget : public QGLWidget
 {
@@ -15,13 +16,16 @@ public:
 protected:
 
 	void initializeGL();
-
-	void resizeGL(int w, int h);
-
 	void paintGL();
+	void resizeGL(int width, int height);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 
 
 private:
+	void makeCube();
+
+	 QVector<QVector3D> vertices;
 	CoreDrawer *_coreDrawer;
 
 };
