@@ -45,13 +45,17 @@ void CoreGLWidget::initializeGL()
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
 
-	//glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT1);
 	//glEnable(GL_MULTISAMPLE);
-	static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
+	static GLfloat lightPosition[4] = { 55.0, 55.0, 7.0, 0.05 };
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
+	GLfloat AmbientLight[] = {50.0, 50.0, 50.0}; //set AmbientLight
+	//glLightfv (GL_LIGHT0, GL_DIFFUSE, lightPosition); //change
+	//glLightfv (GL_LIGHT1, GL_AMBIENT, AmbientLight);
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -62,12 +66,13 @@ void CoreGLWidget::initializeGL()
 	glColor4f(0,0,1, 0.2);
 
 	glDepthFunc(GL_LEQUAL);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glEnable(GL_BLEND);
 	glEnable(GL_ALPHA_TEST);
 	//glEnable(GL_CULL_FACE);
 
+	// (minus, L2)
 }
 
 void CoreGLWidget::paintGL()
@@ -80,7 +85,7 @@ void CoreGLWidget::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -8.0);
+	glTranslatef(0.0, 0.0, -28.0);
 
 
 	_coreDrawer->drawTree();

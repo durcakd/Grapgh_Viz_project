@@ -12,6 +12,7 @@ Node::Node()
 void Node::draw()
 {
 	glPushMatrix();
+	//glTranslated(0.0, 0.0, 5.0);   // zle uz je to srotovane
 	drawMe();
 	drawChildren();
 	glPopMatrix();
@@ -21,6 +22,12 @@ void Node::draw()
 void Node::computeLayout()
 {
 	compMetrics();
+	qDebug() << "COMP CHID POS";
+	compChildPos( 0, 0);
+	compHeight(0);
+
+	qDebug() << "INFO";
+	printInfo();
 }
 
 void Node::compMetrics()
@@ -57,14 +64,54 @@ void Node::compMetrics()
 		_depth = maxDepth + 1;
 		_scale = _maxChildScale * _xcount;
 	}
-	qDebug() << _name << "   " << _depth << "  " << _allChildN << "    -    " << getChildN() << "  " << _xcount << "x" << _ycount << "    " << _scale;
+	//qDebug() << _name << "   " << _depth << "  " << _allChildN << "    -    " << getChildN() << "  " << _xcount << "x" << _ycount << "    " << _scale;
 }
 
-void	compPosition()
+void Node::compChildPos( double xpos, double ypos)
 {
+	_xpos = xpos;
+	_ypos = ypos;
+	//qDebug() << _name << " " << _scale << "       " << _xpos << " " << _ypos;
 
+	if( getChildN() != 0 ){
+		NodeList::const_iterator it;
+		int i = 0;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			double xchpos = xpos + _scale/2 - _maxChildScale/2   - _maxChildScale * (i % _xcount);
+			double ychpos = ypos + _scale/2 - _maxChildScale/2   - _maxChildScale * (i / _xcount);
+			i++;
+			//qDebug() << _name << " " << _scale << " " << _maxChildScale << " " << _xcount << "        " << _xpos << "x" << _ypos << "    " << xchpos << "x" << ychpos ;
+
+			(*it)->compChildPos( xchpos, ychpos);
+		}
+	}
 }
 
+void Node::compHeight(int height)
+{
+	_realHeight = height;
+
+	if( getChildN() != 0 ){
+		NodeList::const_iterator it;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			(*it)->compHeight( height+1);
+		}
+	}
+}
+
+void Node::printInfo() const
+{
+	//qDebug() << _name << "   " << _depth << "  " << _allChildN << "    -    " << getChildN() << "  " << _xcount << "x" << _ycount << "    " << _scale;
+	qDebug() << _name << "   " << getChildN() << "  " << _xcount << "x" << _ycount << "  " << _scale << "       "   << _xpos << " " << _ypos;
+
+
+	NodeList::const_iterator it;
+
+	for( it = _children.cbegin(); it != _children.cend(); it++ ){
+		(*it)->printInfo();
+	}
+
+}
 
 void Node::drawChildren()
 {
@@ -107,7 +154,7 @@ int	Node::getAllChildN() const
 	return _allChildN;
 }
 
-int	Node::getScale() const
+double	Node::getScale() const
 {
 	return _scale;
 }

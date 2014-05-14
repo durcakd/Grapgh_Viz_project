@@ -16,9 +16,28 @@ void Cube::drawMe() const
 	//qDebug() << "drawme";
 
 	glPushMatrix();
-	glRotatef(30, 1.0, 0.0, 0.0);
-	glRotatef(30, 0.0, 1.0, 0.0);
+
 	//glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
+
+
+
+
+
+
+	glRotatef(-35, 1.0, 0.0, 0.0);
+	glRotatef(-15, 0.0, 0.0, 1.0);
+
+	//glRotatef(35, 0.0, 1.0, 0.0);
+
+	glTranslated( _xpos, _ypos, 0 );
+	glTranslated(0.0, 0.0, _realHeight);
+
+	//glScaled(0.9, 0.9, 1.0);
+	glScaled(_scale, _scale, 1);
+
+	glScaled(0.5, 0.5, 0.5);
+
+
 
 	createCube();
 	glPopMatrix();
