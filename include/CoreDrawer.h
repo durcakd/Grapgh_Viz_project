@@ -11,6 +11,7 @@ public:
 
 	void drawTree() const;
 	void addRoot(Node *root);
+	void prepareTree() const;
 
 
 private:

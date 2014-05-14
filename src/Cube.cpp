@@ -3,27 +3,29 @@
 #include <QDebug>
 
 
-Cube::Cube()
+Cube::Cube(QString name)
 	: Node()
 {
-	qDebug() << "Cube constructor";
-
+	//qDebug() << "Cube constructor";
+	_name = name;
 }
 
 
 void Cube::drawMe() const
 {
-	qDebug() << "drawme";
+	//qDebug() << "drawme";
 
+	glPushMatrix();
 	glRotatef(30, 1.0, 0.0, 0.0);
 	glRotatef(30, 0.0, 1.0, 0.0);
 	//glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
-
 	createCube();
+	glPopMatrix();
 
 
 }
+
 
 void Cube::createCube() const
 {

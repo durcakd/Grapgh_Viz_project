@@ -3,6 +3,7 @@
 
 
 #include <list>
+#include <QString>
 
 class Node;
 
@@ -14,21 +15,35 @@ class Node
 public:
 	Node();
 	void draw();
+	void computeLayout();
+	void addChil(Node *child);
+
 
 protected:
 	virtual void drawMe() const = 0;
 
-	void	addChil(Node *child);
 	void	clearChildren();
-	int		childrenCount() const;
+	int		getChildN() const;
 	bool	hasChildren() const;
+	int		getDepth() const;
+	int		getAllChildN() const;
+	int		getScale() const;
 
-
-private:
 	void	drawChildren();
+	void	compMetrics();
+	void	compPosition();
+
 
 	NodeList	_children;
 
+	QString _name;
+	int		_scale;
+	int		_maxChildScale;
+	int		_depth;
+	int		_childN;
+	int		_allChildN;
+	int		_xcount;
+	int		_ycount;
 };
 
 #endif

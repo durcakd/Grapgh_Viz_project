@@ -7,9 +7,33 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 {
 	_coreDrawer = coreDrawer;
 
-	Node *root = new Cube;
+	Node *root = new Cube("root");
+	Node *a = new Cube("a   ");
+	Node *aa = new Cube("aa  ");
+	Node *aaa = new Cube("aaa ");
+	Node *ab = new Cube("ab  ");
+	Node *b = new Cube("b   ");
+	Node *c = new Cube("c   ");
+	Node *ca = new Cube("ca  ");
+	Node *cb = new Cube("cb  ");
+	Node *cba = new Cube("cba ");
+	Node *cbb = new Cube("cbb ");
+	Node *cd = new Cube("cd  ");
+
+	root->addChil(a);
+	root->addChil(b);
+	root->addChil(c);
+	a->addChil(aa);
+	a->addChil(ab);
+	aa->addChil(aaa);
+	c->addChil(ca);
+	c->addChil(cb);
+	c->addChil(cd);
+	cb->addChil(cba);
+	cb->addChil(cbb);
 
 	_coreDrawer->addRoot( root);
+	_coreDrawer->prepareTree();
 }
 
 

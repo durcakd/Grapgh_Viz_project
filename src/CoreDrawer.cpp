@@ -9,10 +9,12 @@ CoreDrawer::CoreDrawer()
 
 void CoreDrawer::drawTree() const
 {
-
 _root->draw();
+}
 
-
+void CoreDrawer::prepareTree() const
+{
+_root->computeLayout();
 }
 
 

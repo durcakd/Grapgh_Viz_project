@@ -9,13 +9,14 @@ class Cube : public Node
 {
 
 public:
-	Cube();
+	Cube( QString name = "");
 
 protected:
 
 	void drawMe() const;
 
 	void createCube() const;
+
 
 
 };
