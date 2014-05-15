@@ -17,22 +17,16 @@ void Cube::drawMe() const
 
 	glPushMatrix();
 
-	//glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
 
-
-
-
-
-	glRotatef(-35, 1.0, 0.0, 0.0);
-	glRotatef(-15, 0.0, 0.0, 1.0);
 
 	//glRotatef(35, 0.0, 1.0, 0.0);
 
 	glTranslated( _xpos, _ypos, 0 );
 	glTranslated(0.0, 0.0, _realHeight);
 
-	//glScaled(0.9, 0.9, 1.0);
+	double scale = 1.0 - (0.15 + 0.2*_realHeight)/_scale;
+	glScaled(scale, scale, 1.0);
 	glScaled(_scale, _scale, 1);
 
 	glScaled(0.5, 0.5, 0.5);
@@ -49,9 +43,9 @@ void Cube::drawMe() const
 void Cube::createCube() const
 {
 	static const GLfloat r = 0.0,
-			g = 0.0,
+			g = 1.0,
 			b = 1.0,
-			a = 0.2;
+			a = 0.8;
 	static const GLfloat vertices[12*3*3] = {
 
 		//	GLfloat *vertices =  new GLfloat[12*3*3]{
