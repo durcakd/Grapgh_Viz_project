@@ -70,8 +70,7 @@ void CoreGLWidget::initLight()
 }
 void CoreGLWidget::initLight2()
 {
-	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -82,15 +81,15 @@ void CoreGLWidget::initLight2()
 
 void CoreGLWidget::initializeGL()
 {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LEQUAL);
 
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW);
 
 
 	//initLight();
-	initLight2();
+	//initLight2();
 
 
 	glEnable(GL_TEXTURE_2D);
@@ -101,10 +100,19 @@ void CoreGLWidget::initializeGL()
 	glClearColor(0,1,1,1);
 	glColor4f(0,0,1, 0.2);
 
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
 	//glDepthFunc(GL_LEQUAL);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_ALPHA_TEST);
+	//glAlphaFunc(GL_GREATER, 0.5);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // straight
+	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);   // premultipled
+
+	//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
+	//glBlendFunc(GL_ONE,GL_ONE);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	//glEnable(GL_BLEND);
+
 	//glEnable(GL_ALPHA_TEST);
 	//glEnable(GL_CULL_FACE);
 
@@ -139,8 +147,8 @@ void CoreGLWidget::paintGL()
 
 
 	// curva
-	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glLineWidth(3.0);
 	glBegin(GL_LINE_STRIP);
 	for (int i = 0; i <= 30; i++)
 		glEvalCoord1f((GLfloat) i/30.0);

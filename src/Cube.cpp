@@ -42,10 +42,10 @@ void Cube::drawMe() const
 
 void Cube::createCube() const
 {
-	static const GLfloat r = 0.0,
-			g = 1.0,
-			b = 1.0,
-			a = 0.8;
+	static const GLfloat r = 0.0f,
+			g = 0.0f,
+			b = 1.0f,
+			a = 0.2f;
 	static const GLfloat vertices[12*3*3] = {
 
 		//	GLfloat *vertices =  new GLfloat[12*3*3]{
