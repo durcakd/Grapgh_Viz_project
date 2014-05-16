@@ -39,8 +39,13 @@ endif(NOT OPENGL_FOUND)
 # ============================================
 ### Source files
 
-file(GLOB SRC_EDITOR	"src/*.cpp")
-file(GLOB INCL_EDITOR	"include/*.h")
+file(GLOB SRC_EDITOR	"src/*.cpp"
+                        "src/data/*.cpp"
+                        "src/layout/*.cpp")
+file(GLOB INCL_EDITOR	"include/*.h"
+                        "include/data/*.h"
+                        "include/layout/*.h")
+
 
 set(SRC		${SRC_EDITOR})
 set(INCL	${INCL_EDITOR})

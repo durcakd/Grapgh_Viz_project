@@ -1,5 +1,5 @@
 #include "CoreWindow.h"
-#include "CoreGLWidget.h"
+#include "layout/CoreGLWidget.h"
 
 
 CoreWindow::CoreWindow(QGLWidget *glWidget, QWidget *parent)

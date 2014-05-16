@@ -1,7 +1,7 @@
 #ifndef COREDRAWER_H
 #define COREDRAWER_H
 
-#include "Node.h"
+#include "layout/Node.h"
 
 class CoreDrawer
 {

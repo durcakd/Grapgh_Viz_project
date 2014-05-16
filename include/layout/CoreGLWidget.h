@@ -3,7 +3,7 @@
 
 #include <QGLWidget>
 #include <QMouseEvent>
-#include "CoreDrawer.h"
+#include "layout/CoreDrawer.h"
 
 #include <QVector3D>
 

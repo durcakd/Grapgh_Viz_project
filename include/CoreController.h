@@ -2,8 +2,8 @@
 #define COROCONTROLLER_H
 
 #include "CoreWindow.h"
-#include "CoreGLWidget.h"
-#include "CoreDrawer.h"
+#include "layout/CoreGLWidget.h"
+#include "layout/CoreDrawer.h"
 
 
 class CoreController

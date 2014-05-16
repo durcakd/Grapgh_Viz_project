@@ -1,7 +1,7 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "Node.h"
+#include "layout/Node.h"
 
 
 

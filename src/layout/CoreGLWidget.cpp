@@ -1,6 +1,6 @@
-#include "CoreGLWidget.h"
+#include "layout/CoreGLWidget.h"
 
-#include "Cube.h"
+#include "layout/Cube.h"
 
 CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent)

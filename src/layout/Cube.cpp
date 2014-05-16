@@ -1,4 +1,4 @@
-#include "Cube.h"
+#include "layout/Cube.h"
 #include <QtOpenGL>
 #include <QDebug>
 

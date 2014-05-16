@@ -1,4 +1,4 @@
-#include "Node.h"
+#include "layout/Node.h"
 #include <QtOpenGL>
 #include <QDebug>
 
