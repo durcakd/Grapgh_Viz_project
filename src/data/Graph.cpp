@@ -2,7 +2,9 @@
 
 #include <QMapIterator>
 #include <QSet>
-
+//#include <QSetIterator>
+#include <QList>
+#include <QMutableListIterator>
 
 Graph::Graph()
 {
@@ -41,16 +43,11 @@ void Graph::addEdge( const QString sourceId, const QString targetId, bool direct
 
 void Graph::createSpanningTree(){
 
-
-
-
-
-
-
+	// *******************************************************************************
 	//    Primov-Jarníkov algoritmus for finding spannig tree ************************
 
 	PriorQueue eQueue(false);
-	QVector<int> eTree;
+	QSet<int> eTree;
 	QSet<QString> nTree;
 	QString actNode = "";
 	int		actEdge;
@@ -91,11 +88,11 @@ void Graph::createSpanningTree(){
 			if(nTree.find(souId) == nTree.constEnd()) {
 				actNode = souId;
 				nTree.insert( actNode );
-				eTree.push_back( actEdge);  }
+				eTree.insert( actEdge);  }
 			if(nTree.find(tarId) == nTree.constEnd()) {
 				actNode = tarId;
 				nTree.insert( actNode );
-				eTree.push_back( actEdge); }
+				eTree.insert( actEdge); }
 		}
 	}
 
@@ -103,6 +100,65 @@ void Graph::createSpanningTree(){
 	qDebug() << "nTree " << nTree.size();
 	qDebug() << "EDGES " << _edges.size();
 	qDebug() << "eTree " << eTree.size();
+
+
+
+	// *****************************************
+	// finding center **************************
+
+	QList<QString> nodeList = nTree.toList();
+	QSet<int> edgeList(eTree);
+
+	while(nodeList.size() > 2){
+
+		qDebug() << "  Node to remove left " << nodeList.size();
+		QList<int> edgeToRemove;
+
+		QMutableListIterator<QString> inl(nodeList);
+
+		// remove nodes with 1 edge
+		while(inl.hasNext()){
+			QString id = inl.next();
+			int counter = 0;
+			int oneEdge;
+
+			const QVector<int>& nodeEdges = _nodes[ id ]->getEdges();
+			QVectorIterator<int> inE(nodeEdges);
+			while(inE.hasNext()){
+				int id = inE.next();
+
+				if(edgeList.find(id) != edgeList.constEnd()) {
+					counter++;
+					oneEdge = id;
+				}
+			}
+			if(counter == 1){
+				inl.remove();
+				edgeToRemove.push_back(oneEdge);
+				//qDebug() << "removing";
+			}
+		}
+
+		foreach (int idr, edgeToRemove) {
+			edgeList.remove(idr);
+		}
+		edgeToRemove.clear();
+	}
+
+	QString centerNode = nodeList.first();
+
+	qDebug() << "Center node" << centerNode << "     edges:" <<  _nodes[centerNode]->getEdgeCount();
+
+
+
+	// *****************************************
+	// creating TREE
+
+
+
+
+
+
 
 
 
