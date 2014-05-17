@@ -11,7 +11,7 @@ int main( int argc, char *argv[])
 
 	//CoreController coreController;
 
-	Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\colored.graphml" );
+	Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\veolia.graphml" );
 	//Manager::getInstance()->loadGraph("colored.graphml" );
 	//Manager::getInstance()->loadGraph("veolia.graphml" );
 

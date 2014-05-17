@@ -77,7 +77,7 @@ bool GraphMLImporter::processGraph_Nodes( QDomElement &graphElement )
 		QString params = "";
 
 		QString nameId = nodeElement.attribute("id");
-		qDebug() << " NODE  " << _entitiesProcessed << "    id: " << nameId;
+		//qDebug() << " NODE  " << _entitiesProcessed << "    id: " << nameId;
 
 		// pozerame sa na data ktore nesie
 		QDomNodeList nodeDataList = nodeElement.elementsByTagName("data");
@@ -89,12 +89,12 @@ bool GraphMLImporter::processGraph_Nodes( QDomElement &graphElement )
 				QDomElement nodeDataElement = nodeData.toElement();
 				QString dataName = nodeDataElement.attribute("key");
 				QString dataValue = nodeDataElement.text();
-				qDebug() << "       " << dataName << "  -  " << dataValue;
+				//qDebug() << "       " << dataName << "  -  " << dataValue;
 
 				if(params.isEmpty()) {
-					params = dataName+":"+dataValue;
+					params = dataName+" | "+dataValue;
 				}else{
-					params += " | "+dataName+":"+dataValue;
+					params += " | "+dataName+" | "+dataValue;
 				}
 
 
@@ -129,7 +129,7 @@ bool GraphMLImporter::processGraph_Edges( QDomElement &graphElement )
 		QString params = "";
 		QString sourceId = edgeElement.attribute("source");
 		QString targetId = edgeElement.attribute("target");
-		qDebug() << " EDGE  " << _entitiesProcessed << "     " << sourceId << " -> " << targetId;
+		//qDebug() << " EDGE  " << _entitiesProcessed << "     " << sourceId << " -> " << targetId;
 
 
 		bool directed = false;
@@ -159,12 +159,12 @@ bool GraphMLImporter::processGraph_Edges( QDomElement &graphElement )
 				QDomElement edgeDataElement = edgeData.toElement();
 				QString dataName = edgeDataElement.attribute("key");
 				QString dataValue = edgeDataElement.text();
-				qDebug() << "       " << dataName << "  -  " << dataValue;
+				//qDebug() << "       " << dataName << "  -  " << dataValue;
 
 				if(params.isEmpty()) {
-					params = dataName+":"+dataValue;
+					params = dataName+" | "+dataValue;
 				}else{
-					params += " | "+dataName+":"+dataValue;
+					params += " | "+dataName+" | "+dataValue;
 				}
 			}
 		}
