@@ -79,7 +79,12 @@ QMap< QString, QString >  GrNode::getParams() const
 	return _params;
 }
 
-QVector<int>  GrNode::getEdges() const
+int GrNode::getEdgeCount() const
+{
+	return _edges.size();
+}
+
+const QVector<int> &GrNode::getEdges() const
 {
 	return _edges;
 }

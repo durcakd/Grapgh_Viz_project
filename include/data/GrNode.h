@@ -15,7 +15,8 @@ public:
 	void addEdge( int id );
 
 	QString						getId() const;
-	QVector<int>				getEdges() const;
+	int							getEdgeCount() const;
+	const QVector<int>		   &getEdges() const;
 	QMap< QString, QString >	getParams() const;
 	GLfloat						r() const;
 	GLfloat						g() const;
