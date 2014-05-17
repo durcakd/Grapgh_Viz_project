@@ -3,8 +3,7 @@
 
 #include <QtXml/QDomElement>
 #include <QList>
-//#include <osg/Vec4b>
-//#include <memory>
+#include "data/Graph.h"
 
 class GraphMLImporter
 {
@@ -13,7 +12,7 @@ public:
 
 	~GraphMLImporter (void) {};
 
-	bool import( QIODevice *stream );
+	bool import( QIODevice *stream, Graph *graph );
 
 private:
 
@@ -32,6 +31,7 @@ private:
 	QIODevice  *_stream;
 	QString		_nodestr;
 	QString		_edgestr;
+	Graph	   *_graph;
 
 
 	// for progress reporting

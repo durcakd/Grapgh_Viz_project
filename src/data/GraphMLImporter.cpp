@@ -3,12 +3,13 @@
 #include <QDebug>
 
 
-bool GraphMLImporter::import( QIODevice *stream )
+bool GraphMLImporter::import(QIODevice *stream , Graph *graph)
 {
 	qDebug() << "IMPORTER: import ...";
 
 
-	_stream = stream;
+	_stream	= stream;
+	_graph	= graph;
 
 
 
@@ -101,7 +102,7 @@ bool GraphMLImporter::processGraph_Nodes( QDomElement &graphElement )
 		}
 		//qDebug() << "   > " << params;
 
-		//GRAFF.addNode(nameId, params );
+		_graph->addNode( nameId, params );
 
 		// subgraphs -- we not support them
 		for (QDomElement subgraphElement = nodeElement.firstChildElement("graph"); ok && !subgraphElement.isNull(); subgraphElement = subgraphElement.nextSiblingElement("graph")) {
@@ -169,8 +170,7 @@ bool GraphMLImporter::processGraph_Edges( QDomElement &graphElement )
 		}
 		//qDebug() << "     " << params;
 
-		//sourceId, targetId, params, directed
-
+		_graph->addEdge( sourceId, targetId, directed, params );
 
 		// vnorene grafy
 		for (QDomElement subgraphElement = edgeElement.firstChildElement("graph"); ok && !subgraphElement.isNull(); subgraphElement = subgraphElement.nextSiblingElement("graph")) {

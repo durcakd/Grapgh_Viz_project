@@ -1,11 +1,9 @@
 #ifndef MANAGER_H
-#define MANAGER_H 1
+#define MANAGER_H
 
 
+#include "data/Graph.h"
 
-//#include <QtXml/QDomElement>
-//#include <QFile>
-//#include <qfileinfo.h>
 
 #include <QString>
 
@@ -15,13 +13,13 @@ public:
 	~Manager();
 
 
-	int		loadGraph(QString filepath);
+	Graph *loadGraph(QString filepath);
 	static	Manager* getInstance();
 
 private:
 
 	Manager();
-	static Manager * manager;
+	static Manager *_manager;
 
 };
 
