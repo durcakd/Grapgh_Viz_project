@@ -4,6 +4,7 @@
 
 #include <list>
 #include <QString>
+#include <QtOpenGL>
 
 class Node;
 
@@ -17,6 +18,7 @@ public:
 	void draw();
 	void computeLayout();
 	void addChil(Node *child);
+	void setColor(GLfloat r = 0.1f, GLfloat g = 0.1f, GLfloat b = 1.0f, GLfloat a = 0.2f);
 
 
 protected:
@@ -49,6 +51,7 @@ protected:
 	int		_ycount;
 	double	_xpos;
 	double	_ypos;
+	GLfloat _a,_r,_g,_b;
 
 };
 
