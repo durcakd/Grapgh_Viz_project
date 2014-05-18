@@ -4,7 +4,7 @@
 #include <QMapIterator>
 #include <QDebug>
 
-GrNode::GrNode(const QString id, int glId, const QString params){
+GrNode::GrNode(const QString id, GLuint glId, const QString params){
 	_id		= id;
 	_glId	= glId;
 
@@ -73,7 +73,7 @@ QString  GrNode::getId() const
 	return _id;
 }
 
-int GrNode::getGlId() const
+GLuint GrNode::getGlId() const
 {
 	return _glId;
 }

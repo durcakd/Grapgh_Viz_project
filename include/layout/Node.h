@@ -16,7 +16,7 @@ class Node
 {
 
 public:
-	Node(GLint	glId);
+	Node(GLuint glId);
 	void draw();
 	void computeLayout();
 	void addChil(Node *child);
@@ -32,7 +32,7 @@ protected:
 	int		getDepth() const;
 	int		getAllChildN() const;
 	double	getRealScale() const;
-	int		getGlId() const;
+	GLuint		getGlId() const;
 
 
 
@@ -56,7 +56,7 @@ protected:
 
 	QString _name;
 	GLfloat _a,_r,_g,_b;
-	GLint	_glId;
+	GLuint	_glId;
 
 	// metrics
 	double		_realScale;
