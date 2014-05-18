@@ -21,13 +21,15 @@ void Node::draw()
 
 void Node::computeLayout()
 {
-	compMetrics();						qDebug() << "COMP METRICS";
-	compMaxedScale( _realScale );		qDebug() << "COMP MAXED SCALE";
-	setVizScale( true );
+											qDebug() << "COMP METRICS";
+	compMetrics();							qDebug() << "COMP MAXED SCALE";
+	compMaxedScale( _realScale );			qDebug() << "SET VIZ SCALE";
+	setVizScale( true );					qDebug() << "COMP CHILD POS";
 
-	compChildPos( 0, 0);				qDebug() << "COMP CHILD POS";
-	compRealHeight(0);						qDebug() << "COMP HEIGHT";
-
+	compChildPos( 0, 0);					qDebug() << "COMP HEIGHT";
+	compRealHeight(0);						qDebug() << "FIND MAX REAL HEGHT  ";
+	int maxHeight = findMaxRealHeight();	qDebug() << "    = " << maxHeight;
+	setMaxRealHeight( maxHeight + 1);
 
 	qDebug() << "INFO";
 	//printInfo();
@@ -103,6 +105,37 @@ void Node::compRealHeight(int height)
 		}
 	}
 }
+
+int	Node::findMaxRealHeight() const
+{
+	int maxRealHeight = 0;
+	if( getChildN() != 0 ){
+		int height;
+		NodeList::const_iterator it;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			height = (*it)->findMaxRealHeight();
+			if(height > maxRealHeight ){
+				maxRealHeight = height;
+			}
+		}
+	} else {
+		maxRealHeight = _realHeight;
+	}
+	return maxRealHeight;
+}
+
+void Node::setMaxRealHeight(int maxRealHeight)
+{
+	_maxRealHeight = maxRealHeight;
+
+	if( getChildN() != 0 ){
+		NodeList::const_iterator it;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			(*it)->setMaxRealHeight( maxRealHeight );
+		}
+	}
+}
+
 
 void Node::compChildPos( double xpos, double ypos)
 {

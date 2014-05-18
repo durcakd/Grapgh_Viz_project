@@ -37,6 +37,9 @@ protected:
 	void	compMaxedScale(double scale);
 	void	setVizScale(bool maxed);
 	void	compRealHeight(int height);
+	int		findMaxRealHeight() const;
+	void	setMaxRealHeight(int maxRealHeight);
+
 
 	void	compChildPos(double xpos, double ypos);
 
@@ -48,19 +51,24 @@ protected:
 	NodeList	_children;
 
 	QString _name;
+	GLfloat _a,_r,_g,_b;
+
+	// metrics
 	double		_realScale;
 	double		_maxedScale;
 	double		_vizScale;
 	double		_maxChildScale;
-	int		_depth;
-	int		_realHeight;
-	//int		_childN;
-	int		_allChildN;
-	int		_xcount;
-	int		_ycount;
-	double	_xpos;
-	double	_ypos;
-	GLfloat _a,_r,_g,_b;
+	int			_depth;
+	int			_realHeight;
+	int			_maxRealHeight;
+	int			_allChildN;
+	int			_xcount;
+	int			_ycount;
+	double		_xpos;
+	double		_ypos;
+
+
+
 
 };
 
