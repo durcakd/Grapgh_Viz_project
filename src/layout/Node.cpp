@@ -24,7 +24,7 @@ void Node::computeLayout()
 											qDebug() << "COMP METRICS";
 	compMetrics();							qDebug() << "COMP MAXED SCALE";
 	compMaxedScale( _realScale );			qDebug() << "SET VIZ SCALE";
-	setVizScale( true );					qDebug() << "COMP CHILD POS";
+	setVizScale( false );					qDebug() << "COMP CHILD POS";
 
 	compChildPos( 0, 0);					qDebug() << "COMP HEIGHT";
 	compRealHeight(0);						qDebug() << "FIND MAX REAL HEGHT  ";
@@ -136,6 +136,17 @@ void Node::setMaxRealHeight(int maxRealHeight)
 	}
 }
 
+void Node::compVerticalPos(double height)
+{
+	_realHeight = height;
+
+	if( getChildN() != 0 ){
+		NodeList::const_iterator it;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			(*it)->compRealHeight( height+1);
+		}
+	}
+}
 
 void Node::compChildPos( double xpos, double ypos)
 {

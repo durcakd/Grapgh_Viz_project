@@ -39,7 +39,7 @@ protected:
 	void	compRealHeight(int height);
 	int		findMaxRealHeight() const;
 	void	setMaxRealHeight(int maxRealHeight);
-
+	void	compVerticalPos(double height);
 
 	void	compChildPos(double xpos, double ypos);
 
