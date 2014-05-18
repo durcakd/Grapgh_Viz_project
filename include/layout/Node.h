@@ -10,6 +10,8 @@ class Node;
 
 typedef std::list< Node* > NodeList;
 
+enum { REALSCALE, MAXEDSCALE, MOSTMAXED };
+
 class Node
 {
 
@@ -34,12 +36,16 @@ protected:
 
 
 	void	compMetrics();
-	void	compMaxedScale(double scale);
-	void	setVizScale(bool maxed);
+	void	compMaxedScale(double scale, QVector<double> &maxScales);
+	void	compMostMaxedScale( const QVector<double> &maxScales);
+	double	compMaxVizChildScale();
+	void	setVizScale(int scaleType);
 	void	compRealHeight(int height);
 	int		findMaxRealHeight() const;
 	void	setMaxRealHeight(int maxRealHeight);
 	void	compVerticalPos(double height);
+
+	void	switchVizScale(int scaleType);
 
 	void	compChildPos(double xpos, double ypos);
 
@@ -56,8 +62,11 @@ protected:
 	// metrics
 	double		_realScale;
 	double		_maxedScale;
+	double		_mostMaxedScale;
 	double		_vizScale;
-	double		_maxChildScale;
+	double		_maxRealChildScale;
+	double		_maxVizChildScale;
+
 	int			_depth;
 	int			_realHeight;
 	int			_maxRealHeight;

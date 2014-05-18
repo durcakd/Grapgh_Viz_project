@@ -11,7 +11,7 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	yRot = 0;
 	zRot = 0;
 
-	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\veolia.graphml" )->createSpanningTree();
+	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\r2.graphml" )->createSpanningTree();
 
 /*
 	root = new Cube("root");
@@ -142,7 +142,7 @@ void CoreGLWidget::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -100000.0);
+	glTranslatef(0.0, 0.0, -250.0);
 
 	//glRotatef(-35, 1.0, 0.0, 0.0);
 	//glRotatef(-15, 0.0, 0.0, 1.0);
