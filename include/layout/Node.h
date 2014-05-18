@@ -29,23 +29,32 @@ protected:
 	bool	hasChildren() const;
 	int		getDepth() const;
 	int		getAllChildN() const;
-	double	getScale() const;
+	double	getRealScale() const;
 
-	void	drawChildren();
+
+
 	void	compMetrics();
+	void	compMaxedScale(double scale);
+	void	setVizScale(bool maxed);
+	void	compRealHeight(int height);
+
 	void	compChildPos(double xpos, double ypos);
-	void	compHeight(int height);
+
+
 	void	printInfo() const;
+	void	drawChildren();
 
 
 	NodeList	_children;
 
 	QString _name;
-	double		_scale;
+	double		_realScale;
+	double		_maxedScale;
+	double		_vizScale;
 	double		_maxChildScale;
 	int		_depth;
 	int		_realHeight;
-	int		_childN;
+	//int		_childN;
 	int		_allChildN;
 	int		_xcount;
 	int		_ycount;

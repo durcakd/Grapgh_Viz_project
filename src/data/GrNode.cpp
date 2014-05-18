@@ -45,16 +45,14 @@ void GrNode::createParameters(const QString params)
 
 	// color
 	QStringList colors = _params["color"].split(",");
-	if( colors.size() == 3 ){
-		_r = (GLfloat) colors.at(0).toFloat() / 255;
-		_g = (GLfloat) colors.at(1).toFloat() / 255;
-		_b = (GLfloat) colors.at(2).toFloat() / 255;
-		_a = 0.2f;
-	} else {
-		_params["color"] = "210,210,210";
-		_r = _g = _b = 0.8f;
-		_a = 0.2f;
+	if( colors.size() != 3 ){
+		_params["color"] = "1,1,250";
+		colors = _params["color"].split(",");
 	}
+	_r = (GLfloat) colors.at(0).toFloat() / 255;
+	_g = (GLfloat) colors.at(1).toFloat() / 255;
+	_b = (GLfloat) colors.at(2).toFloat() / 255;
+	_a = 0.2f;
 
 }
 

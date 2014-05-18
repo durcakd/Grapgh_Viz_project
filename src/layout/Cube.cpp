@@ -25,9 +25,13 @@ void Cube::drawMe() const
 	glTranslated( _xpos, _ypos, 0 );
 	glTranslated(0.0, 0.0, _realHeight);
 
-	double scale = 1.0 - (0.15 + 0.2*_realHeight)/_scale;
+	//double scale = 1.0 - 0.15/_scale;
+	double _maxHeight = 10;
+	double scale = 1.0 - (0.5/_maxHeight)*_realHeight/_vizScale;
+
+	//qDebug() << scale;
 	glScaled(scale, scale, 1.0);
-	glScaled(_scale, _scale, 1);
+	glScaled(_vizScale, _vizScale, _vizScale);
 
 	glScaled(0.5, 0.5, 0.5);
 
@@ -42,10 +46,17 @@ void Cube::drawMe() const
 
 void Cube::createCube() const
 {
-	static const GLfloat r = 0.0f,
+
+	/*static const GLfloat r = 0.0f,
 			g = 0.0f,
 			b = 1.0f,
 			a = 0.2f;
+			*/
+	GLfloat r = _r,
+			   g = _g,
+			   b = _b,
+			   a = _a;
+	//qDebug() <<
 	static const GLfloat vertices[12*3*3] = {
 
 		//	GLfloat *vertices =  new GLfloat[12*3*3]{
@@ -140,7 +151,7 @@ void Cube::createCube() const
 		0.982f,  0.099f,  0.879f
 	};
 */
-	static const GLfloat colors[] = {
+	const GLfloat colors[] = {
 		r,g,b,a,
 		r,g,b,a,
 		r,g,b,a,
