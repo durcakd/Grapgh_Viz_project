@@ -20,9 +20,9 @@ Graph::~Graph()
 }
 
 
-void Graph::addNode(const QString id, const QString params)
+void Graph::addNode(const QString id, int glId, const QString params)
 {
-	GrNode *newNode = new GrNode(id, params);
+	GrNode *newNode = new GrNode(id, glId, params);
 	_nodes[id] = newNode;
 	_nodeCount++;
 }
@@ -167,7 +167,7 @@ Node* Graph::createVizNodeFromTree( QString parId ){
 	//qDebug() << ">>> " << parId;
 
 	GrNode *node = _nodes[parId];
-	Node *vizNode = new Cube( parId );
+	Node *vizNode = new Cube( node->getGlId(), parId );
 
 	vizNode->setColor(  node->r(), node->g(), node->b(), node->a());
 

@@ -33,7 +33,7 @@ public:
 	Graph();
 	~Graph();
 
-	void addNode( const QString id, const QString params );
+	void addNode(const QString id, int glId, const QString params );
 	void addEdge( const QString sourceId, const QString targetId, bool directed, const QString params);
 	Node *createSpanningTree();
 

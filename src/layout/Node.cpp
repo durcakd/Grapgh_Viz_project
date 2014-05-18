@@ -3,9 +3,10 @@
 #include <QDebug>
 
 
-Node::Node()
+Node::Node(GLint glId)
 {
 	//qDebug() << "Node constructor";
+	_glId = glId;
 	setColor();
 }
 
@@ -262,4 +263,8 @@ void Node::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	_g = g;
 	_b = b;
 	_a = a;
+}
+int	Node::getGlId() const
+{
+	return _glId;
 }

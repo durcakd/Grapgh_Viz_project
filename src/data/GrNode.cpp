@@ -4,8 +4,9 @@
 #include <QMapIterator>
 #include <QDebug>
 
-GrNode::GrNode(const QString id, const QString params){
+GrNode::GrNode(const QString id, int glId, const QString params){
 	_id		= id;
+	_glId	= glId;
 
 	createParameters( params );
 
@@ -29,7 +30,7 @@ void GrNode::addEdge( int id )
 
 void GrNode::createParameters(const QString params)
 {
-	QStringList pList = params.split(" | ", QString::SplitBehavior::SkipEmptyParts);
+	QStringList pList = params.split(" | ", QString::SkipEmptyParts);
 	if( pList.size() > 1){
 		if( pList.size() % 2 != 0 ){ qDebug() << "ERROR: GrNode:: pList is not odd !"; return; }
 
@@ -70,6 +71,11 @@ void GrNode::toString() const
 QString  GrNode::getId() const
 {
 	return _id;
+}
+
+int GrNode::getGlId() const
+{
+	return _glId;
 }
 
 QMap< QString, QString >  GrNode::getParams() const

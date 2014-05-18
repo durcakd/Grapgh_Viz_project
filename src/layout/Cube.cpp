@@ -3,8 +3,8 @@
 #include <QDebug>
 
 
-Cube::Cube(QString name)
-	: Node()
+Cube::Cube(GLint glId, QString name)
+	: Node(glId)
 {
 	//qDebug() << "Cube constructor";
 	_name = name;

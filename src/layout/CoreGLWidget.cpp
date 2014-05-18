@@ -187,7 +187,7 @@ void CoreGLWidget::resizeGL(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 5, 200000);
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 5, 1000);
 	//glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0);
 
 	glMatrixMode(GL_MODELVIEW);
