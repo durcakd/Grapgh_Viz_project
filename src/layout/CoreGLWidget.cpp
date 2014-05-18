@@ -1,6 +1,7 @@
 #include "layout/CoreGLWidget.h"
 
 #include "layout/Cube.h"
+#include "data/Manager.h"
 
 CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	: QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
@@ -10,7 +11,10 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	yRot = 0;
 	zRot = 0;
 
-	Node *root = new Cube("root");
+	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\r2.graphml" )->createSpanningTree();
+
+/*
+	root = new Cube("root");
 	Node *a = new Cube("a   ");
 	Node *aa = new Cube("aa  ");
 	Node *aaa = new Cube("aaa ");
@@ -34,6 +38,7 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	c->addChil(cd);
 	cb->addChil(cba);
 	cb->addChil(cbb);
+*/
 
 	_coreDrawer->addRoot( root);
 	_coreDrawer->prepareTree();
@@ -136,10 +141,10 @@ void CoreGLWidget::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -28.0);
+	glTranslatef(0.0, 0.0, -100.0);
 
-	glRotatef(-35, 1.0, 0.0, 0.0);
-	glRotatef(-15, 0.0, 0.0, 1.0);
+	//glRotatef(-35, 1.0, 0.0, 0.0);
+	//glRotatef(-15, 0.0, 0.0, 1.0);
 
 	glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
 	glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
@@ -181,7 +186,7 @@ void CoreGLWidget::resizeGL(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 5, 100);
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 5, 500);
 	//glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0);
 
 	glMatrixMode(GL_MODELVIEW);

@@ -5,6 +5,7 @@
 //#include <QSetIterator>
 #include <QList>
 #include <QMutableListIterator>
+#include "layout/Cube.h"
 
 Graph::Graph()
 {
@@ -41,14 +42,14 @@ void Graph::addEdge( const QString sourceId, const QString targetId, bool direct
 
 
 
-void Graph::createSpanningTree(){
+Node* Graph::createSpanningTree(){
 
 	// *******************************************************************************
 	//    Primov-Jarníkov algoritmus for finding spannig tree ************************
 
+	//PriorQueue eQueue(true);
 	PriorQueue eQueue(false);
-	QSet<int> eTree;
-	QSet<QString> nTree;
+
 	QString actNode = "";
 	int		actEdge;
 
@@ -63,7 +64,7 @@ void Graph::createSpanningTree(){
 		}
 	}
 
-	nTree.insert( actNode );
+	_nTree.insert( actNode );
 
 	while( !actNode.isEmpty()){
 
@@ -85,29 +86,29 @@ void Graph::createSpanningTree(){
 			QString souId = _edges[actEdge]->getSourceId();
 			QString tarId = _edges[actEdge]->getTargetId();
 
-			if(nTree.find(souId) == nTree.constEnd()) {
+			if(_nTree.find(souId) == _nTree.constEnd()) {
 				actNode = souId;
-				nTree.insert( actNode );
-				eTree.insert( actEdge);  }
-			if(nTree.find(tarId) == nTree.constEnd()) {
+				_nTree.insert( actNode );
+				_eTree.insert( actEdge);  }
+			if(_nTree.find(tarId) == _nTree.constEnd()) {
 				actNode = tarId;
-				nTree.insert( actNode );
-				eTree.insert( actEdge); }
+				_nTree.insert( actNode );
+				_eTree.insert( actEdge); }
 		}
 	}
 
 	qDebug() << "NODES " << _nodes.size();
-	qDebug() << "nTree " << nTree.size();
+	qDebug() << "nTree " << _nTree.size();
 	qDebug() << "EDGES " << _edges.size();
-	qDebug() << "eTree " << eTree.size();
+	qDebug() << "eTree " << _eTree.size();
 
 
 
 	// *****************************************
 	// finding center **************************
 
-	QList<QString> nodeList = nTree.toList();
-	QSet<int> edgeList(eTree);
+	QList<QString> nodeList = _nTree.toList();
+	QSet<int> edgeList(_eTree);
 
 	while(nodeList.size() > 2){
 
@@ -122,6 +123,7 @@ void Graph::createSpanningTree(){
 			int counter = 0;
 			int oneEdge;
 
+			// count edges in tree
 			const QVector<int>& nodeEdges = _nodes[ id ]->getEdges();
 			QVectorIterator<int> inE(nodeEdges);
 			while(inE.hasNext()){
@@ -145,24 +147,68 @@ void Graph::createSpanningTree(){
 		edgeToRemove.clear();
 	}
 
-	QString centerNode = nodeList.first();
+	QString centerNodeId = nodeList.first();
 
-	qDebug() << "Center node" << centerNode << "     edges:" <<  _nodes[centerNode]->getEdgeCount();
+	qDebug() << "Center node" << centerNodeId << "     edges:" <<  _nodes[centerNodeId]->getEdgeCount();
 
 
 
 	// *****************************************
 	// creating TREE
 
-
-
-
-
-
-
-
+	return createVizNodeFromTree( centerNodeId );
 
 }
+
+
+Node* Graph::createVizNodeFromTree( QString parId ){
+	// create new Viz Node
+	_nTree.remove( parId );
+	//qDebug() << ">>> " << parId;
+
+	GrNode *node = _nodes[parId];
+	Node *vizNode = new Cube( parId );
+
+	vizNode->setColor(  node->r(), node->g(), node->b(), node->a());
+
+	// count edges in tree
+	const QVector<int>& nodeEdges = node->getEdges();
+	QVectorIterator<int> inE(nodeEdges);
+	while(inE.hasNext()){
+		int ide = inE.next();
+
+		if(_eTree.find(ide) != _eTree.constEnd()) { // is tree edge
+			QString souId = _edges[ide]->getSourceId();
+			QString tarId = _edges[ide]->getTargetId();
+			QString childId = souId != parId ? souId : tarId;
+
+			if( _nTree.find(childId) != _nTree.constEnd() ){
+				vizNode->addChil( createVizNodeFromTree( childId ));
+			}
+		}
+	}
+	//qDebug() << "<<< " << parId;
+	return vizNode;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

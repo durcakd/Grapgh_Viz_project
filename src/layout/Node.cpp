@@ -6,7 +6,7 @@
 Node::Node()
 {
 //qDebug() << "Node constructor";
-
+	setColor();
 }
 
 void Node::draw()
@@ -157,4 +157,11 @@ int	Node::getAllChildN() const
 double	Node::getScale() const
 {
 	return _scale;
+}
+void Node::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+{
+	_r = r;
+	_g = g;
+	_b = b;
+	_a = a;
 }
