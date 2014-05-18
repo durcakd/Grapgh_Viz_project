@@ -16,7 +16,7 @@ void Cube::drawMe() const
 	//qDebug() << "drawme";
 
 	glPushMatrix();
-
+	glPushName( _glId );
 
 
 
@@ -38,8 +38,11 @@ void Cube::drawMe() const
 	glScaled(0.5, 0.5, 0.5);
 
 
-
+	glPopName();
 	createCube();
+
+
+
 	glPopMatrix();
 
 
