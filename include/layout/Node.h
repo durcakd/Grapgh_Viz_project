@@ -36,17 +36,14 @@ protected:
 
 
 	void	compMetrics();
-	void	compMaxedScale(double scale, QVector<double> &maxScales);
-	void	compMostMaxedScale( const QVector<double> &maxScales);
-	double	compMaxVizChildScale();
-	void	setVizScale(int scaleType);
 	void	compRealHeight(int height);
 	int		findMaxRealHeight() const;
 	void	setMaxRealHeight(int maxRealHeight);
-	void	compVerticalPos(double height);
+	void	compMaxedScale(double scale);
+	void	compMostMaxScale( double mmscale);
 
 	void	switchVizScale(int scaleType);
-
+	void	setVizScale(int scaleType);
 	void	compChildPos(double xpos, double ypos);
 
 
@@ -64,7 +61,10 @@ protected:
 	double		_maxedScale;
 	double		_mostMaxedScale;
 	double		_vizScale;
+
 	double		_maxRealChildScale;
+	double		_maxMaxedChildScale;
+	double		_maxMostMaxedChildScale;
 	double		_maxVizChildScale;
 
 	int			_depth;

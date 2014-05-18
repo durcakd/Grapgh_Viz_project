@@ -23,7 +23,7 @@ void Cube::drawMe() const
 	//glRotatef(35, 0.0, 1.0, 0.0);
 
 	double heightCoef	= 10;  //(0 - _realScale of root
-	double gapCoef		= 0.3;     //(0 - 1.0)
+	double gapCoef		= 0.5;     //(0 - 1.0)
 
 	glTranslated( _xpos, _ypos, 0 );
 	glTranslated(0.0, 0.0, _realHeight*heightCoef );
@@ -32,7 +32,7 @@ void Cube::drawMe() const
 
 	//double scale = 1.0 - 0.15/_scale;
 	double scale = 1.0 - (gapCoef	/_maxRealHeight)*_realHeight/_vizScale;
-	//glScaled(scale, scale, 1.0);
+	glScaled(scale, scale, 1.0);
 	glScaled(_vizScale, _vizScale, heightCoef);
 
 	glScaled(0.5, 0.5, 0.5);

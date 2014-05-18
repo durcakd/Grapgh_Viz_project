@@ -29,19 +29,16 @@ void Node::computeLayout()
 	setMaxRealHeight( maxHeight + 1);			qDebug() << "COMP MAXED SCALE";
 
 
+	compMaxedScale( _realScale);				qDebug() << "COMP MOST MAXED SCALE";
+	compMostMaxScale( _realScale);
 
-	QVector<double> maxScales;
-	compMaxedScale( _realScale, maxScales );	qDebug() << "COMP MOST MAXED SCALE";
-	compMostMaxedScale( maxScales );			qDebug() << "SET VIZ SCALE";
-	maxScales.clear();
-
-	switchVizScale( REALSCALE );				qDebug() << "COMP CHILD POS"; // REALSCALE, MAXEDSCALE, MOSTMAXED
+	switchVizScale( REALSCALE );				qDebug() << "COMP CHILD POS"; // REALSCALE, MAXEDSCALE , MOSTMAXED
 
 	qDebug() << "INFO";
 	//printInfo();
 }
 
-// METRICS
+// METRICS =============================
 void Node::compMetrics()
 {
 
@@ -79,56 +76,6 @@ void Node::compMetrics()
 	//qDebug() << _name << "   " << _depth << "  " << _allChildN << "    -    " << getChildN() << "  " << _xcount << "x" << _ycount << "    " << _scale;
 }
 
-void Node::compMaxedScale(double scale, QVector<double> &maxScales)
-{
-	if( maxScales.size() > _realHeight) {
-		if( maxScales.at(_realHeight) < scale ){
-			maxScales[_realHeight] = scale;
-		}
-	} else {
-		maxScales.push_back( scale );
-	}
-
-	_maxedScale = scale;
-
-	// set all children to max scale
-	if( _children.size() > 0){
-		NodeList::const_iterator it;
-		for( it = _children.cbegin(); it != _children.cend(); it++ ){
-			(*it)->compMaxedScale( _maxRealChildScale, maxScales );
-		}
-	}
-}
-
-void Node::compMostMaxedScale( const QVector<double> &maxScales)
-{
-	_mostMaxedScale = maxScales.at(_realHeight);
-
-	// set all children to max scale
-	if( _children.size() > 0){
-		NodeList::const_iterator it;
-		for( it = _children.cbegin(); it != _children.cend(); it++ ){
-			(*it)->compMostMaxedScale( maxScales );
-		}
-	}
-}
-
-
-void Node::setVizScale( int scaleType ){
-	// REALSCALE, MAXEDSCALE, MOSTMAXED
-	if( scaleType == REALSCALE ){
-		_vizScale = _realScale;
-	} else if( scaleType == MAXEDSCALE ){
-		_vizScale = _maxedScale;
-	} else if( scaleType == MOSTMAXED ){
-		_vizScale = _mostMaxedScale;
-	}
-
-	NodeList::const_iterator it;
-	for( it = _children.cbegin(); it != _children.cend(); it++ ){
-		(*it)->setVizScale( scaleType );
-	}
-}
 
 void Node::compRealHeight(int height)
 {
@@ -141,7 +88,6 @@ void Node::compRealHeight(int height)
 		}
 	}
 }
-
 int	Node::findMaxRealHeight() const
 {
 	int maxRealHeight = 0;
@@ -159,7 +105,6 @@ int	Node::findMaxRealHeight() const
 	}
 	return maxRealHeight;
 }
-
 void Node::setMaxRealHeight(int maxRealHeight)
 {
 	_maxRealHeight = maxRealHeight;
@@ -172,38 +117,59 @@ void Node::setMaxRealHeight(int maxRealHeight)
 	}
 }
 
-void Node::compVerticalPos(double height)
-{
-	_realHeight = height;
 
-	if( getChildN() != 0 ){
+void Node::compMaxedScale(double scale)
+{
+	_maxedScale = scale;
+
+	// set all children to max scale
+	if( _children.size() > 0){
 		NodeList::const_iterator it;
 		for( it = _children.cbegin(); it != _children.cend(); it++ ){
-			(*it)->compRealHeight( height+1);
+			(*it)->compMaxedScale( _maxRealChildScale);
 		}
 	}
 }
-
-
-double Node::compMaxVizChildScale()
+void Node::compMostMaxScale( double mmscale)
 {
-	_maxVizChildScale = 0.0;
+	_mostMaxedScale = mmscale;   // _maxMostMaxedChildScale;
+
 	if( _children.size() != 0 ){
+
+		int x = ((int)mmscale) / ((int)_realScale);
+		_maxMostMaxedChildScale = x * _maxRealChildScale;
+
 		NodeList::const_iterator it;
 		for( it = _children.cbegin(); it != _children.cend(); it++ ){
-			double childScale =  (*it)->compMaxVizChildScale();
-			if( _maxVizChildScale < childScale) {
-				_maxVizChildScale = childScale; }
+			(*it)->compMostMaxScale( _maxMostMaxedChildScale );
 		}
 	}
-	return _vizScale;
 }
+
+
 void Node::switchVizScale(int scaleType){
-													qDebug() << "SET VIZ SCALE";
-	setVizScale( scaleType );						qDebug() << "COMP MAX VIZ CHILD SCALES";
-	compMaxVizChildScale();							qDebug() << "COMP CHILD POS";
+										qDebug() << "SET VIZ SCALE";
+	setVizScale( scaleType );			qDebug() << "COMP CHILD POS";
 	compChildPos( 0, 0 );
 
+}
+void Node::setVizScale( int scaleType ){
+	// REALSCALE, MAXEDSCALE, MOSTMAXED
+	if( scaleType == REALSCALE ){
+		_vizScale			= _realScale;
+		_maxVizChildScale	= _maxRealChildScale;
+	} else if( scaleType == MAXEDSCALE ){
+		_vizScale			= _maxedScale;
+		_maxVizChildScale	= _maxRealChildScale;
+	} else if( scaleType == MOSTMAXED ){
+		_vizScale			= _mostMaxedScale;
+		_maxVizChildScale	= _maxMostMaxedChildScale;
+	}
+
+	NodeList::const_iterator it;
+	for( it = _children.cbegin(); it != _children.cend(); it++ ){
+		(*it)->setVizScale( scaleType );
+	}
 }
 void Node::compChildPos( double xpos, double ypos)
 {
@@ -229,9 +195,6 @@ void Node::compChildPos( double xpos, double ypos)
 }
 
 
-
-
-
 void Node::printInfo() const
 {
 	//qDebug() << _name << "   " << _depth << "  " << _allChildN << "    -    " << getChildN() << "  " << _xcount << "x" << _ycount << "    " << _scale;
@@ -245,7 +208,6 @@ void Node::printInfo() const
 	}
 
 }
-
 void Node::drawChildren()
 {
 	//qDebug() << "Node drawChildren";
@@ -259,7 +221,7 @@ void Node::drawChildren()
 }
 
 
-
+// ===========================
 
 void Node::addChil(Node *child)
 {
