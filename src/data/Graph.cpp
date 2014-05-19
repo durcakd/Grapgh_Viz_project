@@ -17,12 +17,16 @@ Graph::~Graph()
 {
 	_nodes.clear();
 	_edges.clear();
+	_noTreeEdges.clear();
+	_eTree.clear();
+	_nTree.clear();
+
 }
 
 
-void Graph::addNode(const QString id, const QString params)
+void Graph::addNode(const QString id, int glId, const QString params)
 {
-	GrNode *newNode = new GrNode(id, params);
+	GrNode *newNode = new GrNode(id, glId, params);
 	_nodes[id] = newNode;
 	_nodeCount++;
 }
@@ -167,7 +171,7 @@ Node* Graph::createVizNodeFromTree( QString parId ){
 	//qDebug() << ">>> " << parId;
 
 	GrNode *node = _nodes[parId];
-	Node *vizNode = new Cube( parId );
+	Node *vizNode = new Cube( node->getGlId(), parId );
 
 	vizNode->setColor(  node->r(), node->g(), node->b(), node->a());
 
@@ -185,12 +189,24 @@ Node* Graph::createVizNodeFromTree( QString parId ){
 			if( _nTree.find(childId) != _nTree.constEnd() ){
 				vizNode->addChil( createVizNodeFromTree( childId ));
 			}
+		}else{
+			GrEdge* edge = _edges.find(ide).value();
+			_noTreeEdges.insert(ide, edge);
+
 		}
 	}
 	//qDebug() << "<<< " << parId;
 	return vizNode;
 }
 
+QMap< QString, GrNode* > Graph::getNodes() const
+{
+	return _nodes;
+}
+QMap< int, GrEdge* > Graph::getNoTreeEdges() const
+{
+	return _noTreeEdges;
+}
 
 
 

@@ -4,8 +4,9 @@
 #include <QMapIterator>
 #include <QDebug>
 
-GrNode::GrNode(const QString id, const QString params){
+GrNode::GrNode(const QString id, GLuint glId, const QString params){
 	_id		= id;
+	_glId	= glId;
 
 	createParameters( params );
 
@@ -29,7 +30,7 @@ void GrNode::addEdge( int id )
 
 void GrNode::createParameters(const QString params)
 {
-	QStringList pList = params.split(" | ", QString::SplitBehavior::SkipEmptyParts);
+	QStringList pList = params.split(" | ", QString::SkipEmptyParts);
 	if( pList.size() > 1){
 		if( pList.size() % 2 != 0 ){ qDebug() << "ERROR: GrNode:: pList is not odd !"; return; }
 
@@ -45,16 +46,14 @@ void GrNode::createParameters(const QString params)
 
 	// color
 	QStringList colors = _params["color"].split(",");
-	if( colors.size() == 3 ){
-		_r = (GLfloat) colors.at(0).toFloat() / 255;
-		_g = (GLfloat) colors.at(1).toFloat() / 255;
-		_b = (GLfloat) colors.at(2).toFloat() / 255;
-		_a = 0.2f;
-	} else {
-		_params["color"] = "210,210,210";
-		_r = _g = _b = 0.8f;
-		_a = 0.2f;
+	if( colors.size() != 3 ){
+		_params["color"] = "1,1,250";
+		colors = _params["color"].split(",");
 	}
+	_r = (GLfloat) colors.at(0).toFloat() / 255;
+	_g = (GLfloat) colors.at(1).toFloat() / 255;
+	_b = (GLfloat) colors.at(2).toFloat() / 255;
+	_a = 0.2f;
 
 }
 
@@ -72,6 +71,11 @@ void GrNode::toString() const
 QString  GrNode::getId() const
 {
 	return _id;
+}
+
+GLuint GrNode::getGlId() const
+{
+	return _glId;
 }
 
 QMap< QString, QString >  GrNode::getParams() const

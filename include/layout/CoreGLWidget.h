@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include "layout/CoreDrawer.h"
 
 #include <QVector3D>
@@ -26,8 +27,13 @@ protected:
 	void resizeGL(int width, int height);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
-	void initLight();
-	void initLight2();
+	void wheelEvent(QWheelEvent *event);
+
+	void paint();
+
+
+	GLuint faceAtPosition(const QPoint &pos);
+
 
 private:
 	void makeCube();
@@ -35,10 +41,18 @@ private:
 	 QVector<QVector3D> vertices;
 	CoreDrawer *_coreDrawer;
 
+	int _width;
+	int _height;
+	GLfloat _frusMax;
+	GLfloat _posZ;
 	int xRot;
 	int yRot;
 	int zRot;
+	GLfloat rotationX;
+   GLfloat rotationY;
+   GLfloat rotationZ;
 	QPoint lastPos;
+	QPoint actPos;
 
 };
 

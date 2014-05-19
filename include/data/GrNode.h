@@ -9,12 +9,13 @@
 class GrNode
 	{
 public:
-	GrNode( const QString id, const QString params );
+	GrNode(const QString id, GLuint glId, const QString params );
 	~GrNode();
 
 	void addEdge( int id );
 
 	QString						getId() const;
+	GLuint						getGlId() const;
 	int							getEdgeCount() const;
 	const QVector<int>		   &getEdges() const;
 	QMap< QString, QString >	getParams() const;
@@ -29,6 +30,7 @@ private:
 
 
 	QString _id;
+	GLuint _glId;
 	GLfloat _r, _g, _b, _a;
 
 	QMap< QString, QString > _params;
