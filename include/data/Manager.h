@@ -22,6 +22,8 @@ public:
 	GLfloat _gapCoef;//		= 0.3;     //(0 - 1.0)
 	GLint _curvewidth;//	= 1;  //(0 - _realScale of root
 	bool _selAdjNodes;
+	GLfloat _a;//		= 0.3;     //(0 - 1.0)
+
 
 private:
 

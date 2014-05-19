@@ -2,6 +2,8 @@
 #include <QtOpenGL>
 #include <QDebug>
 
+#include "data/Manager.h"
+
 
 Node::Node(GLuint glId, QString id)
 {
@@ -286,6 +288,8 @@ GLuint Node::getGlId() const
 void Node::setVizColor(int colorType)
 {
 	// ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR
+	_a = Manager::getInstance()->_a;
+
 	if(colorType == ORIGCOLOR){
 		_vr = _r;
 		_vg = _g;
@@ -295,21 +299,21 @@ void Node::setVizColor(int colorType)
 		_vr = 1.0f;
 		_vg = 0.0f;
 		_vb = 0.0f;
-		_va = _a;
+		_va = (_a*2)> 1.0f ? 1.0f : (_a*2);
 	} else if(colorType == SELECTED2){
 				_vr = 0.0f;
 				_vg = 1.0f;
 				_vb = 0.0f;
-				_va = _a;
+				_va = (_a*2)> 1.0f ? 1.0f : (_a*2) ;
 	} else if(colorType == BASICCOLOR){
 		_vr = 0.0f;
 		_vg = 0.0f;
 		_vb = 1.0f;
 		_va = _a;
 	} else if(colorType == UNSELECTED){
-		_vr = 1.0f;
-		_vg = 1.0f;
-		_vb = 1.0f;
+		_vr = 0.3f;
+		_vg = 0.3f;
+		_vb = 0.3f;
 		_va = _a;
 	}
 }

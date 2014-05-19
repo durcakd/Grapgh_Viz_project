@@ -17,9 +17,11 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	xRot = 0;
 	yRot = 0;
 	zRot = 0;
+	_frusMax = 300;
+	_posZ = 50;
 
 
-	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\colored.graphml" )->createSpanningTree();
+	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\r2.graphml" )->createSpanningTree();
 	_coreDrawer->setGraph( Manager::getInstance()->getGraph() );
 	_coreDrawer->addRoot( root);
 	_coreDrawer->prepareTree();
@@ -71,6 +73,7 @@ void CoreGLWidget::initializeGL()
 
 	// Other
 	glClearColor(1,1,1,1);
+	//glClearColor( 0,0,0,0);
 
 	//glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
@@ -152,6 +155,33 @@ void CoreGLWidget::mouseMoveEvent(QMouseEvent *event)
 	updateGL();
 
 }
+void CoreGLWidget::wheelEvent(QWheelEvent *event){
+
+	int numDegrees = event->delta() / 8;
+	int numTicks = numDegrees / 15;
+
+	if(numTicks > 0){
+		_posZ *= 1.2f;
+	}else{
+		_posZ /= 1.15f;
+	}
+	_frusMax = _posZ*2.5f;
+
+	qDebug() << "--- " << _posZ;
+	qDebug() << "--- " << _frusMax;
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	GLfloat x = GLfloat(_width) / _height;
+	glFrustum(-x, x, -1.0, 1.0, 4.0, _frusMax);
+	glMatrixMode(GL_MODELVIEW);
+
+	//_frusMax = ;
+	//_posZ = ;
+
+	updateGL();
+}
+
 
 void CoreGLWidget::resizeGL(int width, int height)
 {
@@ -161,7 +191,7 @@ void CoreGLWidget::resizeGL(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	GLfloat x = GLfloat(width) / height;
-	glFrustum(-x, x, -1.0, 1.0, 4.0, 300.0);
+	glFrustum(-x, x, -1.0, 1.0, 4.0, _frusMax);
 	glMatrixMode(GL_MODELVIEW);
 }
 void CoreGLWidget::setXRotation(int angle)
@@ -207,7 +237,7 @@ void CoreGLWidget::paint()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -50.0);
+	glTranslatef(0.0, 0.0, -_posZ);
 
 	//glRotatef(-35, 1.0, 0.0, 0.0);
 	//glRotatef(-15, 0.0, 0.0, 1.0);
@@ -291,9 +321,9 @@ GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 	glPushMatrix();
 	glLoadIdentity();
 	gluPickMatrix(GLdouble(pos.x()), GLdouble(viewport[3] - pos.y()),
-				  5.0, 5.0, viewport);
+			5.0, 5.0, viewport);
 	GLfloat x = GLfloat(width()) / height();
-	glFrustum(-x, x, -1.0, 1.0, 4.0, 50.0);
+	glFrustum(-x, x, -1.0, 1.0, 4.0, _frusMax/0.7);
 	paint();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();

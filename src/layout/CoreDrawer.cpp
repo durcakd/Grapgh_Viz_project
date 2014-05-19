@@ -45,6 +45,8 @@ void CoreDrawer::createNodeMap()
 
 void CoreDrawer::setSelectedNode(GLuint glId)
 {
+
+	GLfloat a = Manager::getInstance()->_a;
 	GLuint key;
 	Node *node, *selected = NULL;
 	QMapIterator<GLuint, Node*> it(_nodes);
@@ -55,7 +57,7 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 		if(key == glId){
 			selected = node;
 		} else {
-			node->setVizColor( ORIGCOLOR );
+			node->setVizColor( UNSELECTED );
 		}
 	}
 	if(selected != NULL){
@@ -73,7 +75,7 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 				ine.next();
 				qDebug() << " >" << ine.key();
 				GrEdge *nedge = ine.value();
-				nedge->setColor( 0.1f, 0.0f, 1.0f, 0.8f  );
+				nedge->setColor( 0.3f, 0.3f, .3f, a );
 
 			}
 
@@ -93,15 +95,17 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 				if(_noTreeGrEdges.find(ekey) != _noTreeGrEdges.end()){
 					GrEdge  *grEdge = _noTreeGrEdges[ekey];
 					//qDebug() << "  <<" << ekey ;
-					grEdge->setColor( 0.5f, 0.5f, 0.1f, 0.8f  );
+					grEdge->setColor( 0.1f, 1.0f, 0.0f, a  );
 
 
 					QString adjId = grEdge->getSourceId();
 					if(adjId == sid) { adjId = grEdge->getTargetId(); }
 
-					GLuint adjGlId = _grNodes[adjId]->getGlId();
-					_nodes[adjGlId]->setVizColor( SELECTED2 );
+					if(adjId != sid){
 
+						GLuint adjGlId = _grNodes[adjId]->getGlId();
+						_nodes[adjGlId]->setVizColor( SELECTED2 );
+					}
 					// select nodes
 
 

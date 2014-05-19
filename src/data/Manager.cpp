@@ -19,10 +19,11 @@ Manager *Manager::_manager;
 Manager::Manager()
 {
 	_manager = this;
-	_heightCoef	= 1;  //(0 - _realScale of root
+	_heightCoef	= 10;  //(0 - _realScale of root
 	_gapCoef		= 0.3;     //(0 - 1.0)
 	_curvewidth = 3;
 	_selAdjNodes = true;
+	_a = 0.2f;
 }
 
 Manager::~Manager(){ }

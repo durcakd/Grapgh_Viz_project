@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include "layout/CoreDrawer.h"
 
 #include <QVector3D>
@@ -26,7 +27,7 @@ protected:
 	void resizeGL(int width, int height);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
-
+	void wheelEvent(QWheelEvent *event);
 
 	void paint();
 	void initLight();
@@ -43,6 +44,8 @@ private:
 
 	int _width;
 	int _height;
+	GLfloat _frusMax;
+	GLfloat _posZ;
 	int xRot;
 	int yRot;
 	int zRot;
