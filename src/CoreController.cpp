@@ -7,7 +7,7 @@ CoreController::CoreController()
 	_coreGLWidget = new CoreGLWidget(_coreDrawer );
 	_coreWindow = new CoreWindow( _coreGLWidget );
 
-	_coreWindow->resize( 400, 300 );
+	_coreWindow->resize( 400, 400 );
 	_coreWindow->show();
 
 }

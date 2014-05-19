@@ -26,8 +26,17 @@ protected:
 	void resizeGL(int width, int height);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
+
+
+	void paint();
+	void draw();
 	void initLight();
 	void initLight2();
+
+	int faceAtPosition(const QPoint &pos);
+	void processHits (GLint hits, GLuint buffer[]);
+	void list_hits(GLint hits, GLuint *names);
+
 
 private:
 	void makeCube();
@@ -35,10 +44,16 @@ private:
 	 QVector<QVector3D> vertices;
 	CoreDrawer *_coreDrawer;
 
+	int _width;
+	int _height;
 	int xRot;
 	int yRot;
 	int zRot;
+	GLfloat rotationX;
+   GLfloat rotationY;
+   GLfloat rotationZ;
 	QPoint lastPos;
+	QPoint actPos;
 
 };
 

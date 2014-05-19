@@ -11,6 +11,7 @@ class Node;
 typedef std::list< Node* > NodeList;
 
 enum { REALSCALE, MAXEDSCALE, MOSTMAXED };
+enum { ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR };
 
 class Node
 {
@@ -20,6 +21,8 @@ public:
 	void draw();
 	void computeLayout();
 	void addChil(Node *child);
+
+	void setVizColor(int colorType);
 	void setColor(GLfloat r = 0.1f, GLfloat g = 0.1f, GLfloat b = 1.0f, GLfloat a = 0.2f);
 
 
@@ -56,6 +59,7 @@ protected:
 
 	QString _name;
 	GLfloat _a,_r,_g,_b;
+	GLfloat _va,_vr,_vg,_vb;
 	GLuint	_glId;
 
 	// metrics

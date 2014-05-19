@@ -8,6 +8,7 @@ Node::Node(GLuint glId)
 	//qDebug() << "Node constructor";
 	_glId = glId;
 	setColor();
+	setVizColor(ORIGCOLOR);
 }
 
 void Node::draw()
@@ -33,7 +34,7 @@ void Node::computeLayout()
 	compMaxedScale( _realScale);				qDebug() << "COMP MOST MAXED SCALE";
 	compMostMaxScale( _realScale);
 
-	switchVizScale( REALSCALE );				qDebug() << "COMP CHILD POS"; // REALSCALE, MAXEDSCALE , MOSTMAXED
+	switchVizScale( MOSTMAXED );				qDebug() << "COMP CHILD POS"; // REALSCALE, MAXEDSCALE , MOSTMAXED
 
 	qDebug() << "INFO";
 	//printInfo();
@@ -267,4 +268,30 @@ void Node::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 GLuint Node::getGlId() const
 {
 	return _glId;
+}
+
+void Node::setVizColor(int colorType)
+{
+	// ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR
+	if(colorType == ORIGCOLOR){
+		_vr = _r;
+		_vg = _g;
+		_vb = _b;
+		_va = _a;
+	} else if(colorType == SELECTED){
+		_vr = 1.0f;
+		_vg = 0.0f;
+		_vb = 0.0f;
+		_va = _a;
+	} else if(colorType == BASICCOLOR){
+		_vr = 0.0f;
+		_vg = 0.0f;
+		_vb = 1.0f;
+		_va = _a;
+	} else if(colorType == UNSELECTED){
+		_vr = 1.0f;
+		_vg = 1.0f;
+		_vb = 1.0f;
+		_va = _a;
+	}
 }

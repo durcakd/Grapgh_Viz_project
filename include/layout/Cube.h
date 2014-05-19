@@ -16,7 +16,7 @@ protected:
 	void drawMe() const;
 
 	void createCube() const;
-
+	void createCube2() const;
 
 
 };
