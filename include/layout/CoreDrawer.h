@@ -9,27 +9,33 @@
 #include "data/GrNode.h"
 #include "data/GrEdge.h"
 #include "data/Graph.h"
+#include <QObject>
 
-class CoreDrawer
+class CoreDrawer :  public QObject
 {
-
+	Q_OBJECT
 public:
 	CoreDrawer();
+	~CoreDrawer();
+
 
 	void drawTree();
-	void addRoot(Node *root);
-	void prepareTree();
-
-	void setSelectedNode(GLuint glId);
-	void setGraph( Graph *graph) { _graph = graph;}
-	void prepareEdges();
 	void drawEdges();
+	void setSelectedNode(GLuint glId);
+
+signals:
+	void sentHeightCoef( GLuint heightCoef );
+
+public slots:
+	void openNewGraph(QString fileName);
+	void computeHeightCoef(int value );
 
 private:
 
-	void drawEdge(GrEdge *grEdge);
+	void cleanData();
+
+	void prepareEdges();
 	void prepareEdge(GrEdge *grEdge);
-	void createNodeMap();
 
 
 	Node *_root;

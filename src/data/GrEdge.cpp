@@ -92,8 +92,8 @@ QMap< QString, QString >  GrEdge::getParams() const
 
 void  GrEdge::draw()
 {
-	GLfloat heightCoef	= Manager::getInstance()->_heightCoef;  //(0 - _realScale of root
-	GLfloat curvewidth	= Manager::getInstance()->_curvewidth;  //(0 - _realScale of root
+	GLfloat heightCoef	= Manager::getInstance()->getHeightCoef();
+	GLfloat curvewidth	= Manager::getInstance()->getCurveWidthCoef();
 
 
 	GLfloat ctrlpoints[4][3] = {
@@ -115,13 +115,5 @@ void  GrEdge::draw()
 		glEvalCoord1f((GLfloat) i/30.0);
 	glEnd();
 
-	/*
-	// curva point
-	glPointSize(5.0);
-	glColor3f(1.0, 1.0, 0.0);
-	glBegin(GL_POINTS);
-	for (int i = 0; i < 4; i++)
-		glVertex3fv(&ctrlpoints[i][0]);
-	glEnd();*/
 
 }

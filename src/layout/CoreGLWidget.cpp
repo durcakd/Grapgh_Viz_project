@@ -13,73 +13,30 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 {
 	//setFormat(QGLFormat(QGL::DoubleBuffer | QGL::DepthBuffer));
 
+	xRot		= 0;
+	yRot		= 0;
+	zRot		= 0;
+	_frusMax	= 300;
+	_posZ		= 50;
+
 	_coreDrawer = coreDrawer;
-	xRot = 0;
-	yRot = 0;
-	zRot = 0;
-	_frusMax = 300;
-	_posZ = 50;
+
+	//_coreDrawer->openNewGraph( " D://qtWorkspace//Grapgh_Viz_project//graphs//circle.graphml" );
 
 
-	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\r2.graphml" )->createSpanningTree();
-	_coreDrawer->setGraph( Manager::getInstance()->getGraph() );
-	_coreDrawer->addRoot( root);
-	_coreDrawer->prepareTree();
 }
 
 
-// Set up lighting
-void CoreGLWidget::initLight()
-{
-	GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };// Okolní svìtlo
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightAmbient);
-
-	GLfloat LightDiffuse[]= { 0.9f, 0.9f, 0.9f, 1.0f };// Pøímé svìtlo
-	GLfloat LightPosition[]= { 4.0f, 0.0f, 8.0f, 1.0f };// Pozice svìtla
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);// Nastavení pøímého svìtla
-	glLightfv(GL_LIGHT0, GL_POSITION,LightPosition);// Nastavení pozice svìtla
-
-	GLfloat LightColor1[]= { 0.5f, 0.2f, 0.2f, 1.0f };// Pøímé svìtlo
-	GLfloat LightPosition1[]= { -1.0f, 0.5f, 0.5f, 1.0f };// Pozice svìtla
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);// Nastavení pøímého svìtla
-	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition1);// Nastavení pozice svìtla
-	//glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);// Nastavení pozice svìtla
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_NORMALIZE);
-	glEnable(GL_SMOOTH);
-
-	//
-}
-void CoreGLWidget::initLight2()
-{
-
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	//glEnable(GL_MULTISAMPLE);
-	static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-}
 
 void CoreGLWidget::initializeGL()
 {
 	//glEnable(GL_DEPTH_TEST);
 
-	//initLight();
-	//initLight2();
 
 	// Other
 	glClearColor(1,1,1,1);
 	//glClearColor( 0,0,0,0);
 
-	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glDepthFunc(GL_LEQUAL);
-	//glEnable(GL_ALPHA_TEST);
-	//glAlphaFunc(GL_GREATER, 0.5);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // straight
 	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);   // premultipled
@@ -142,18 +99,17 @@ void CoreGLWidget::mouseMoveEvent(QMouseEvent *event)
 
 	if (event->buttons() & Qt::RightButton) {
 		setXRotation(xRot + 8 * dy);
-		setYRotation(yRot + 8 * dx);
-	}/* else if (event->buttons() & Qt::LeftButton) {
-		setXRotation(xRot + 8 * dy);
 		setZRotation(zRot + 8 * dx);
-	}*/
-	lastPos = event->pos();
+		lastPos = event->pos();
+	}else{
+		lastPos = event->pos();
 
-	GLuint glId =  faceAtPosition(lastPos);
-	//qDebug() << ">>   "  << glId;
-	_coreDrawer->setSelectedNode( glId);
+		GLuint glId =  faceAtPosition(lastPos);
+		//qDebug() << ">>   "  << glId;
+		_coreDrawer->setSelectedNode( glId);
+
+	}
 	updateGL();
-
 }
 void CoreGLWidget::wheelEvent(QWheelEvent *event){
 
@@ -323,7 +279,7 @@ GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 	gluPickMatrix(GLdouble(pos.x()), GLdouble(viewport[3] - pos.y()),
 			5.0, 5.0, viewport);
 	GLfloat x = GLfloat(width()) / height();
-	glFrustum(-x, x, -1.0, 1.0, 4.0, _frusMax/0.7);
+	glFrustum(-x, x, -1.0, 1.0, 4.0, _frusMax);
 	paint();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();

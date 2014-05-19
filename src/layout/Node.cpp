@@ -288,7 +288,7 @@ GLuint Node::getGlId() const
 void Node::setVizColor(int colorType)
 {
 	// ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR
-	_a = Manager::getInstance()->_a;
+	_a = Manager::getInstance()->getAlphaCoef();
 
 	if(colorType == ORIGCOLOR){
 		_vr = _r;

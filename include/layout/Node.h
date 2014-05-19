@@ -30,6 +30,8 @@ public:
 	double getXpos() const {return _xpos;}
 	double getYpos() const {return _ypos;}
 	int		getRealHeight() const {return _realHeight; }
+	double	getRealScale() const;
+
 
 	QString _name;
 
@@ -41,7 +43,6 @@ protected:
 	bool	hasChildren() const;
 	int		getDepth() const;
 	int		getAllChildN() const;
-	double	getRealScale() const;
 	GLuint		getGlId() const;
 
 

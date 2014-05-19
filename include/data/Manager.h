@@ -3,12 +3,13 @@
 
 
 #include "data/Graph.h"
-
-
+#include <QObject>
+#include <QtOpenGL>
 #include <QString>
 
-class Manager
-	{
+class Manager : public QObject
+{
+	Q_OBJECT
 public:
 	~Manager();
 
@@ -18,18 +19,32 @@ public:
 
 	Graph *getGraph() const {return _graph;}
 
-	GLint _heightCoef;//	= 1;  //(0 - _realScale of root
-	GLfloat _gapCoef;//		= 0.3;     //(0 - 1.0)
-	GLint _curvewidth;//	= 1;  //(0 - _realScale of root
-	bool _selAdjNodes;
-	GLfloat _a;//		= 0.3;     //(0 - 1.0)
 
+	GLfloat getAlphaCoef();
+	GLuint	getHeightCoef();
+	GLfloat getGapCoef();
+	GLuint getCurveWidthCoef();
+	bool getSelectAdjNodes();
+
+public slots:
+	void setAlphaCoef( int value );
+	void setHeightCoef( GLuint heightCoef );
+	void setGapCoef( int value );
+	void setCurveWidthCoef( int width );
+	void setSelectAdjNodes( bool select);
 
 private:
 
 	Manager();
 	static Manager *_manager;
 	Graph *_graph;
+
+	GLuint _heightCoef;
+	GLfloat _gapCoef;
+	GLint _curvewidth;
+	bool _selectAdjNodes;
+	GLfloat _alpha;
+
 };
 
 #endif

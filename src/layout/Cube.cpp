@@ -25,8 +25,8 @@ void Cube::drawMe() const
 
 	//glRotatef(35, 0.0, 1.0, 0.0);
 
-	GLint heightCoef	= Manager::getInstance()->_heightCoef;  //(0 - _realScale of root
-	GLfloat gapCoef		= Manager::getInstance()->_gapCoef;     //(0 - 1.0)
+	GLuint heightCoef	= Manager::getInstance()->getHeightCoef();
+	GLfloat gapCoef		= Manager::getInstance()->getGapCoef();
 
 	glTranslated( _xpos, _ypos, 0 );
 	glTranslated(0.0, 0.0, _realHeight*heightCoef );

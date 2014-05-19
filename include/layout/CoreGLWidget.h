@@ -30,8 +30,7 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 	void paint();
-	void initLight();
-	void initLight2();
+
 
 	GLuint faceAtPosition(const QPoint &pos);
 

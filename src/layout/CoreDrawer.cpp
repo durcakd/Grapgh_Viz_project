@@ -7,46 +7,113 @@
 CoreDrawer::CoreDrawer()
 {
 	_root = NULL;
+	_graph = NULL;
+}
+
+CoreDrawer::~CoreDrawer()
+{
+	cleanData();
+}
+
+void CoreDrawer::cleanData()
+{
+	delete _root;
+	QMapIterator<GLuint, Node*> itN(_nodes);
+	while(itN.hasNext()){
+		Node *node = itN.next().value();
+		delete node;
+	}
+	_nodes.clear();
+
+	QMapIterator< QString, GrNode* > itGN(_grNodes);
+	while(itGN.hasNext()){
+		GrNode *grnode = itGN.next().value();
+		delete grnode;
+	}
+	_grNodes.clear();
+
+	QMapIterator< int, GrEdge* > itE(_noTreeGrEdges);
+	while(itE.hasNext()){
+		GrEdge *gredge = itE.next().value();
+		delete gredge;
+	}
+	_noTreeGrEdges.clear();
+
+	delete _graph ;
 }
 
 void CoreDrawer::drawTree()
 {
-	_root->draw();
-
-
-
+	if(_root != NULL){
+		_root->draw();
+	}
 }
 
-
-
-void CoreDrawer::prepareTree()
+void CoreDrawer::drawEdges()
 {
+	// draw edges
+	QMapIterator< int, GrEdge* > ei( _noTreeGrEdges);
+	while( ei.hasNext()){
+		ei.next();
+		//int id = ei.key();
+		GrEdge *grEdge = ei.value();
+
+		grEdge->draw();
+	}
+}
+
+void CoreDrawer::openNewGraph(QString fileName){
+
+	cleanData();
+
+	_root	= Manager::getInstance()->loadGraph(fileName)->createSpanningTree();
+	_graph	= Manager::getInstance()->getGraph();
+
+	// create data for edges;
+	_root->createNodeMap( _nodes );
+	_grNodes		= _graph->getNodes();
+	_noTreeGrEdges	= _graph->getNoTreeEdges();
+
+
 	_root->computeLayout();
 	prepareEdges();
+
 }
 
-
-void CoreDrawer::addRoot( Node *root)
+void CoreDrawer::prepareEdges()
 {
-	delete _root;
-	_root = root;
-	createNodeMap();
-	_grNodes = _graph->getNodes();
-	_noTreeGrEdges = _graph->getNoTreeEdges();
+	// draw edges
+	QMapIterator< int, GrEdge* > ei( _noTreeGrEdges);
+	while( ei.hasNext()){
+		ei.next();
+		//int id = ei.key();
+		GrEdge *grEdge = ei.value();
 
+		prepareEdge( grEdge );
+	}
 }
 
-
-void CoreDrawer::createNodeMap()
+void CoreDrawer::prepareEdge( GrEdge *grEdge)
 {
-	_root->createNodeMap( _nodes );
-}
+	QString sourceId = grEdge->getSourceId();
+	QString targetId = grEdge->getTargetId();
 
+	GLuint sglId =_grNodes[sourceId]->getGlId();
+	GLuint tglId =_grNodes[targetId]->getGlId();
+
+	grEdge->_sx	= _nodes[sglId]->getXpos();
+	grEdge->_sy	= _nodes[sglId]->getYpos();
+	grEdge->_srh = _nodes[sglId]->getRealHeight();
+	grEdge->_tx	= _nodes[tglId]->getXpos();
+	grEdge->_ty	= _nodes[tglId]->getYpos();
+	grEdge->_trh = _nodes[tglId]->getRealHeight();
+
+}
 
 void CoreDrawer::setSelectedNode(GLuint glId)
 {
 
-	GLfloat a = Manager::getInstance()->_a;
+	GLfloat a = Manager::getInstance()->getAlphaCoef();
 	GLuint key;
 	Node *node, *selected = NULL;
 	QMapIterator<GLuint, Node*> it(_nodes);
@@ -67,13 +134,13 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 
 
 		// find adj nodes
-		if(Manager::getInstance()->_selAdjNodes){
+		if(Manager::getInstance()->getSelectAdjNodes()){
 			// clear edges
 
 			QMapIterator< int, GrEdge* > ine(_noTreeGrEdges);
 			while(ine.hasNext()){
 				ine.next();
-				qDebug() << " >" << ine.key();
+				//qDebug() << " >" << ine.key();
 				GrEdge *nedge = ine.value();
 				nedge->setColor( 0.3f, 0.3f, .3f, a );
 
@@ -108,11 +175,6 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 					}
 					// select nodes
 
-
-
-
-
-
 				}
 			}
 
@@ -122,54 +184,14 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 }
 
 
-void CoreDrawer::prepareEdges()
-{
-	// draw edges
-	QMapIterator< int, GrEdge* > ei( _noTreeGrEdges);
-	while( ei.hasNext()){
-		ei.next();
-		//int id = ei.key();
-		GrEdge *grEdge = ei.value();
 
-		prepareEdge( grEdge );
+void CoreDrawer::computeHeightCoef(int value )
+{
+	if(_root != NULL){
+		emit sentHeightCoef( (((GLfloat)value)/100.0f) * (GLfloat) _root->getRealScale() );
 	}
 }
-void CoreDrawer::drawEdges()
-{
-	// draw edges
-	QMapIterator< int, GrEdge* > ei( _noTreeGrEdges);
-	while( ei.hasNext()){
-		ei.next();
-		//int id = ei.key();
-		GrEdge *grEdge = ei.value();
 
-		grEdge->draw();
-	}
-}
-void CoreDrawer::prepareEdge( GrEdge *grEdge)
-{
-	QString sourceId = grEdge->getSourceId();
-	QString targetId = grEdge->getTargetId();
-
-	GLuint sglId =_grNodes[sourceId]->getGlId();
-	GLuint tglId =_grNodes[targetId]->getGlId();
-
-	grEdge->_sx	= _nodes[sglId]->getXpos();
-	grEdge->_sy	= _nodes[sglId]->getYpos();
-	grEdge->_srh = _nodes[sglId]->getRealHeight();
-	grEdge->_tx	= _nodes[tglId]->getXpos();
-	grEdge->_ty	= _nodes[tglId]->getYpos();
-	grEdge->_trh = _nodes[tglId]->getRealHeight();
-
-}
-
-void CoreDrawer::drawEdge( GrEdge *grEdge)
-{
-
-
-
-
-}
 
 
 

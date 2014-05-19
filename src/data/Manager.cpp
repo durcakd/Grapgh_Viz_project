@@ -19,11 +19,12 @@ Manager *Manager::_manager;
 Manager::Manager()
 {
 	_manager = this;
-	_heightCoef	= 10;  //(0 - _realScale of root
-	_gapCoef		= 0.3;     //(0 - 1.0)
-	_curvewidth = 3;
-	_selAdjNodes = true;
-	_a = 0.2f;
+
+	_heightCoef		= 10;
+	_gapCoef		= 0.3f;
+	_curvewidth		= 3;
+	_selectAdjNodes = true;
+	_alpha			= 0.2f;
 }
 
 Manager::~Manager(){ }
@@ -69,4 +70,79 @@ Manager* Manager::getInstance()
 	}
 	return _manager;
 }
+
+void Manager::setAlphaCoef( int value )
+{
+	_alpha = ((GLfloat)value)/100.0f;
+}
+void Manager::setHeightCoef(GLuint heightCoef )
+{
+	_heightCoef = heightCoef;
+}
+void Manager::setGapCoef( int value )
+{
+	_gapCoef = ((GLfloat)value)/100.0f;
+}
+void Manager::setCurveWidthCoef( int width )
+{
+	_curvewidth = width;
+}
+void Manager::setSelectAdjNodes( bool select)
+{
+	_selectAdjNodes = select;
+}
+
+GLfloat Manager::getAlphaCoef()
+{
+	return _alpha;
+}
+GLuint Manager::getHeightCoef()
+{
+	return _heightCoef;
+}
+GLfloat Manager::getGapCoef()
+{
+	return _gapCoef;
+}
+GLuint Manager::getCurveWidthCoef()
+{
+	return _curvewidth;
+}
+bool Manager::getSelectAdjNodes()
+{
+	return _selectAdjNodes;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
