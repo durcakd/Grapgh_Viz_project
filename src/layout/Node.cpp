@@ -222,6 +222,18 @@ void Node::drawChildren()
 
 }
 
+void Node::createNodeMap(QMap<GLuint, Node*> &mapa )
+{
+	mapa.insert( _glId, this );
+
+	// set all children to max scale
+	if( _children.size() > 0){
+		NodeList::const_iterator it;
+		for( it = _children.cbegin(); it != _children.cend(); it++ ){
+			(*it)->createNodeMap( mapa );
+		}
+	}
+}
 
 // ===========================
 

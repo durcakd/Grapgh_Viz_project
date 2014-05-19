@@ -5,6 +5,7 @@
 #include <list>
 #include <QString>
 #include <QtOpenGL>
+#include <QMap>
 
 class Node;
 
@@ -24,6 +25,7 @@ public:
 
 	void setVizColor(int colorType);
 	void setColor(GLfloat r = 0.1f, GLfloat g = 0.1f, GLfloat b = 1.0f, GLfloat a = 0.2f);
+	void	createNodeMap(QMap<GLuint, Node*> &mapa );
 
 
 protected:

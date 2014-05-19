@@ -164,7 +164,7 @@ static void qNormalizeAngle(int &angle)
 void CoreGLWidget::mousePressEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
-	qDebug() << "PRESS   " << lastPos.x() << " " << lastPos.y();
+	//qDebug() << "PRESS   " << lastPos.x() << " " << lastPos.y();
 
 }
 void CoreGLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -175,17 +175,15 @@ void CoreGLWidget::mouseMoveEvent(QMouseEvent *event)
 	if (event->buttons() & Qt::RightButton) {
 		setXRotation(xRot + 8 * dy);
 		setYRotation(yRot + 8 * dx);
-	} /*else if (event->buttons() & Qt::LeftButton) {
+	} else if (event->buttons() & Qt::LeftButton) {
 		setXRotation(xRot + 8 * dy);
 		setZRotation(zRot + 8 * dx);
-	}*/
+	}
 	lastPos = event->pos();
 
-
-
-	//qDebug() << "PRESS   " << lastPos.x() << " " << lastPos.y();
-	//gl_select(lastPos.x(), 400 - lastPos.y());
-	qDebug() << ">>   "  <<  faceAtPosition(lastPos);
+	GLuint glId =  faceAtPosition(lastPos);
+	qDebug() << ">>   "  << glId;
+	_coreDrawer->setSelectedNode( glId);
 
 }
 
@@ -379,7 +377,7 @@ int CoreGLWidget::faceAtPosition(const QPoint &pos)
 }
 */
 
-int CoreGLWidget::faceAtPosition(const QPoint &pos)
+GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 {
 	const int MaxSize = 512;
 	GLuint buffer[MaxSize];

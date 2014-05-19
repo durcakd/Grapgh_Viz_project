@@ -33,7 +33,7 @@ protected:
 	void initLight();
 	void initLight2();
 
-	int faceAtPosition(const QPoint &pos);
+	GLuint faceAtPosition(const QPoint &pos);
 	void processHits (GLint hits, GLuint buffer[]);
 	void list_hits(GLint hits, GLuint *names);
 
