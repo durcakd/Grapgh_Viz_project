@@ -17,6 +17,10 @@ Graph::~Graph()
 {
 	_nodes.clear();
 	_edges.clear();
+	_noTreeEdges.clear();
+	_eTree.clear();
+	_nTree.clear();
+
 }
 
 

@@ -17,29 +17,31 @@ CoreDrawer::~CoreDrawer()
 
 void CoreDrawer::cleanData()
 {
-	delete _root;
-	QMapIterator<GLuint, Node*> itN(_nodes);
-	while(itN.hasNext()){
-		Node *node = itN.next().value();
-		delete node;
-	}
-	_nodes.clear();
+	if(_root != NULL){
 
-	QMapIterator< QString, GrNode* > itGN(_grNodes);
-	while(itGN.hasNext()){
-		GrNode *grnode = itGN.next().value();
-		delete grnode;
-	}
-	_grNodes.clear();
+		QMapIterator<GLuint, Node*> itN(_nodes);
+		while(itN.hasNext()){
+			Node *node = itN.next().value();
+			delete node;
+		}
+		_nodes.clear();
 
-	QMapIterator< int, GrEdge* > itE(_noTreeGrEdges);
-	while(itE.hasNext()){
-		GrEdge *gredge = itE.next().value();
-		delete gredge;
-	}
-	_noTreeGrEdges.clear();
+		QMapIterator< QString, GrNode* > itGN(_grNodes);
+		while(itGN.hasNext()){
+			GrNode *grnode = itGN.next().value();
+			delete grnode;
+		}
+		_grNodes.clear();
 
-	delete _graph ;
+		QMapIterator< int, GrEdge* > itE(_noTreeGrEdges);
+		while(itE.hasNext()){
+			GrEdge *gredge = itE.next().value();
+			delete gredge;
+		}
+		_noTreeGrEdges.clear();
+
+		delete _graph ;
+	}
 }
 
 void CoreDrawer::drawTree()
@@ -76,7 +78,11 @@ void CoreDrawer::openNewGraph(QString fileName){
 
 
 	_root->computeLayout();
+	computeHeightCoef( 50);
+
 	prepareEdges();
+
+
 
 }
 
