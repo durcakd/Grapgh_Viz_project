@@ -33,9 +33,11 @@ public:
 	Graph();
 	~Graph();
 
-	void addNode( const QString id, const QString params );
+	void addNode(const QString id, int glId, const QString params );
 	void addEdge( const QString sourceId, const QString targetId, bool directed, const QString params);
 	Node *createSpanningTree();
+	QMap< QString, GrNode* > getNodes() const ;
+	QMap< int, GrEdge* > getNoTreeEdges() const ;
 
 private:
 	Node *createVizNodeFromTree( QString parId );
@@ -44,6 +46,7 @@ private:
 	int _edgeCount;
 	QMap< QString, GrNode* > _nodes;
 	QMap< int, GrEdge* > _edges;
+	QMap< int, GrEdge* > _noTreeEdges;
 	QSet<int> _eTree;
 	QSet<QString> _nTree;
 

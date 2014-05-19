@@ -102,7 +102,7 @@ bool GraphMLImporter::processGraph_Nodes( QDomElement &graphElement )
 		}
 		//qDebug() << "   > " << params;
 
-		_graph->addNode( nameId, params );
+		_graph->addNode( nameId, _entitiesProcessed+1, params );
 
 		// subgraphs -- we not support them
 		for (QDomElement subgraphElement = nodeElement.firstChildElement("graph"); ok && !subgraphElement.isNull(); subgraphElement = subgraphElement.nextSiblingElement("graph")) {

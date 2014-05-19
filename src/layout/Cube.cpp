@@ -1,13 +1,15 @@
 #include "layout/Cube.h"
 #include <QtOpenGL>
 #include <QDebug>
+#include "data/Manager.h"
 
+#include <GL/glu.h>
 
-Cube::Cube(QString name)
-	: Node()
+Cube::Cube(GLint glId, QString name)
+	: Node(glId, name)
 {
 	//qDebug() << "Cube constructor";
-	_name = name;
+
 }
 
 
@@ -16,36 +18,112 @@ void Cube::drawMe() const
 	//qDebug() << "drawme";
 
 	glPushMatrix();
-
+	glPushName( _glId );
+	//qDebug() << _glId;
 
 
 
 	//glRotatef(35, 0.0, 1.0, 0.0);
 
+	GLuint heightCoef	= Manager::getInstance()->getHeightCoef();
+	GLfloat gapCoef		= Manager::getInstance()->getGapCoef();
+
 	glTranslated( _xpos, _ypos, 0 );
-	glTranslated(0.0, 0.0, _realHeight);
+	glTranslated(0.0, 0.0, _realHeight*heightCoef );
 
-	double scale = 1.0 - (0.15 + 0.2*_realHeight)/_scale;
+
+
+	//double scale = 1.0 - 0.15/_scale;
+	double scale = 1.0 - (gapCoef	/_maxRealHeight)*_realHeight/_vizScale;
 	glScaled(scale, scale, 1.0);
-	glScaled(_scale, _scale, 1);
+	glScaled(_vizScale, _vizScale, heightCoef);
 
-	glScaled(0.5, 0.5, 0.5);
+	//glScaled(0.5, 0.5, 0.5);
+
 
 
 
 	createCube();
+
+	glPopName();
 	glPopMatrix();
 
 
 }
 
 
+void Cube::createCube2() const{
+
+//Multi-colored side - FRONT
+  glBegin(GL_POLYGON);
+
+  glColor3f( _vr, _vg, _vb );
+  glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
+  glVertex3f(  0.5,  0.5, -0.5 );      // P2 is green
+  glVertex3f( -0.5,  0.5, -0.5 );      // P3 is blue
+  glVertex3f( -0.5, -0.5, -0.5 );      // P4 is purple
+
+  glEnd();
+
+  // White side - BACK
+  glBegin(GL_POLYGON);
+   glColor3f( _vr, _vg, _vb );
+  glVertex3f(  0.5, -0.5, 0.5 );
+  glVertex3f(  0.5,  0.5, 0.5 );
+  glVertex3f( -0.5,  0.5, 0.5 );
+  glVertex3f( -0.5, -0.5, 0.5 );
+  glEnd();
+
+  // Purple side - RIGHT
+  glBegin(GL_POLYGON);
+  glColor3f( _vr, _vg, _vb );
+  glVertex3f( 0.5, -0.5, -0.5 );
+  glVertex3f( 0.5,  0.5, -0.5 );
+  glVertex3f( 0.5,  0.5,  0.5 );
+  glVertex3f( 0.5, -0.5,  0.5 );
+  glEnd();
+
+  // Green side - LEFT
+  glBegin(GL_POLYGON);
+  glColor3f( _vr, _vg, _vb );
+  glVertex3f( -0.5, -0.5,  0.5 );
+  glVertex3f( -0.5,  0.5,  0.5 );
+  glVertex3f( -0.5,  0.5, -0.5 );
+  glVertex3f( -0.5, -0.5, -0.5 );
+  glEnd();
+
+  // Blue side - TOP
+  glBegin(GL_POLYGON);
+   glColor3f( _vr, _vg, _vb );
+  glVertex3f(  0.5,  0.5,  0.5 );
+  glVertex3f(  0.5,  0.5, -0.5 );
+  glVertex3f( -0.5,  0.5, -0.5 );
+  glVertex3f( -0.5,  0.5,  0.5 );
+  glEnd();
+
+  // Red side - BOTTOM
+  glBegin(GL_POLYGON);
+   glColor3f( _vr, _vg, _vb );
+  glVertex3f(  0.5, -0.5, -0.5 );
+  glVertex3f(  0.5, -0.5,  0.5 );
+  glVertex3f( -0.5, -0.5,  0.5 );
+  glVertex3f( -0.5, -0.5, -0.5 );
+  glEnd();
+}
+
 void Cube::createCube() const
 {
-	static const GLfloat r = 0.0f,
+	glScaled(0.5, 0.5, 0.5);
+	/*static const GLfloat r = 0.0f,
 			g = 0.0f,
 			b = 1.0f,
 			a = 0.2f;
+			*/
+	GLfloat r = _vr,
+			   g = _vg,
+			   b = _vb,
+			   a = _va;
+	//qDebug() <<
 	static const GLfloat vertices[12*3*3] = {
 
 		//	GLfloat *vertices =  new GLfloat[12*3*3]{
@@ -140,7 +218,7 @@ void Cube::createCube() const
 		0.982f,  0.099f,  0.879f
 	};
 */
-	static const GLfloat colors[] = {
+	const GLfloat colors[] = {
 		r,g,b,a,
 		r,g,b,a,
 		r,g,b,a,

@@ -19,6 +19,12 @@ Manager *Manager::_manager;
 Manager::Manager()
 {
 	_manager = this;
+
+	_heightCoef		= 10;
+	_gapCoef		= 0.3f;
+	_curvewidth		= 3;
+	_selectAdjNodes = true;
+	_alpha			= 0.2f;
 }
 
 Manager::~Manager(){ }
@@ -26,7 +32,7 @@ Manager::~Manager(){ }
 
 Graph* Manager::loadGraph(QString filepath)
 {
-	Graph *graph = new Graph();
+	_graph = new Graph();
 
 	qDebug() << "Manager: load file:  " << filepath;
 	//otvaranie suboru
@@ -45,7 +51,7 @@ Graph* Manager::loadGraph(QString filepath)
 
 
 
-	ok = importer->import ( &(*stream), graph );
+	ok = importer->import ( &(*stream), _graph );
 	if(!ok) { qDebug() << "Unable import graph."; }
 
 	// ukoncenie streamu
@@ -53,7 +59,7 @@ Graph* Manager::loadGraph(QString filepath)
 		stream->close ();
 	}
 	if(!ok) { return NULL; }
-	return graph;
+	return _graph;
 }
 
 
@@ -64,4 +70,79 @@ Manager* Manager::getInstance()
 	}
 	return _manager;
 }
+
+void Manager::setAlphaCoef( int value )
+{
+	_alpha = ((GLfloat)value)/100.0f;
+}
+void Manager::setHeightCoef(GLuint heightCoef )
+{
+	_heightCoef = heightCoef;
+}
+void Manager::setGapCoef( int value )
+{
+	_gapCoef = ((GLfloat)value)/100.0f;
+}
+void Manager::setCurveWidthCoef( int width )
+{
+	_curvewidth = width;
+}
+void Manager::setSelectAdjNodes( bool select)
+{
+	_selectAdjNodes = select;
+}
+
+GLfloat Manager::getAlphaCoef()
+{
+	return _alpha;
+}
+GLuint Manager::getHeightCoef()
+{
+	return _heightCoef;
+}
+GLfloat Manager::getGapCoef()
+{
+	return _gapCoef;
+}
+GLuint Manager::getCurveWidthCoef()
+{
+	return _curvewidth;
+}
+bool Manager::getSelectAdjNodes()
+{
+	return _selectAdjNodes;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
