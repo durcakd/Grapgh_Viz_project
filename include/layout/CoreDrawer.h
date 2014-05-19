@@ -6,6 +6,9 @@
 #include <QtOpenGL>
 #include <QMap>
 #include <QMapIterator>
+#include "data/GrNode.h"
+#include "data/GrEdge.h"
+#include "data/Graph.h"
 
 class CoreDrawer
 {
@@ -13,14 +16,19 @@ class CoreDrawer
 public:
 	CoreDrawer();
 
-	void drawTree() const;
+	void drawTree();
 	void addRoot(Node *root);
-	void prepareTree() const;
+	void prepareTree();
 
 	void setSelectedNode(GLuint glId);
+	void setGraph( Graph *graph) { _graph = graph;}
+	void prepareEdges();
+	void drawEdges();
 
 private:
 
+	void drawEdge(GrEdge *grEdge);
+	void prepareEdge(GrEdge *grEdge);
 	void createNodeMap();
 
 
@@ -28,7 +36,9 @@ private:
 	QMap<GLuint, Node*> _nodes;
 
 
-
+	QMap< QString, GrNode* > _grNodes;
+	QMap< int, GrEdge* > _noTreeGrEdges;
+	Graph *_graph;
 
 };
 

@@ -185,12 +185,24 @@ Node* Graph::createVizNodeFromTree( QString parId ){
 			if( _nTree.find(childId) != _nTree.constEnd() ){
 				vizNode->addChil( createVizNodeFromTree( childId ));
 			}
+		}else{
+			GrEdge* edge = _edges.find(ide).value();
+			_noTreeEdges.insert(ide, edge);
+
 		}
 	}
 	//qDebug() << "<<< " << parId;
 	return vizNode;
 }
 
+QMap< QString, GrNode* > Graph::getNodes() const
+{
+	return _nodes;
+}
+QMap< int, GrEdge* > Graph::getNoTreeEdges() const
+{
+	return _noTreeEdges;
+}
 
 
 

@@ -27,6 +27,9 @@ public:
 	void setColor(GLfloat r = 0.1f, GLfloat g = 0.1f, GLfloat b = 1.0f, GLfloat a = 0.2f);
 	void	createNodeMap(QMap<GLuint, Node*> &mapa );
 
+	double getXpos() const {return _xpos;}
+	double getYpos() const {return _ypos;}
+	int		getRealHeight() const {return _realHeight; }
 
 protected:
 	virtual void drawMe() const = 0;

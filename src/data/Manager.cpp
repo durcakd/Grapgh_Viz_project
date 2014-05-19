@@ -19,6 +19,9 @@ Manager *Manager::_manager;
 Manager::Manager()
 {
 	_manager = this;
+	_heightCoef	= 1;  //(0 - _realScale of root
+	_gapCoef		= 0.3;     //(0 - 1.0)
+
 }
 
 Manager::~Manager(){ }
@@ -26,7 +29,7 @@ Manager::~Manager(){ }
 
 Graph* Manager::loadGraph(QString filepath)
 {
-	Graph *graph = new Graph();
+	_graph = new Graph();
 
 	qDebug() << "Manager: load file:  " << filepath;
 	//otvaranie suboru
@@ -45,7 +48,7 @@ Graph* Manager::loadGraph(QString filepath)
 
 
 
-	ok = importer->import ( &(*stream), graph );
+	ok = importer->import ( &(*stream), _graph );
 	if(!ok) { qDebug() << "Unable import graph."; }
 
 	// ukoncenie streamu
@@ -53,7 +56,7 @@ Graph* Manager::loadGraph(QString filepath)
 		stream->close ();
 	}
 	if(!ok) { return NULL; }
-	return graph;
+	return _graph;
 }
 
 

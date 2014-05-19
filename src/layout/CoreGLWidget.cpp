@@ -17,46 +17,13 @@ CoreGLWidget::CoreGLWidget( CoreDrawer *coreDrawer, QWidget *parent)
 	xRot = 0;
 	yRot = 0;
 	zRot = 0;
-	rotationX  = 0.0f;
-	rotationY  = 0.0f;
-	rotationZ  = 0.0f;
 
-	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\circle.graphml" )->createSpanningTree();
 
-	/*
-	root = new Cube("root");
-	Node *a = new Cube("a   ");
-	Node *aa = new Cube("aa  ");
-	Node *aaa = new Cube("aaa ");
-	Node *ab = new Cube("ab  ");
-	Node *b = new Cube("b   ");
-	Node *c = new Cube("c   ");
-	Node *ca = new Cube("ca  ");
-	Node *cb = new Cube("cb  ");
-	Node *cba = new Cube("cba ");
-	Node *cbb = new Cube("cbb ");
-	Node *cd = new Cube("cd  ");
-
-	root->addChil(a);
-	root->addChil(b);
-	root->addChil(c);
-	a->addChil(aa);
-	a->addChil(ab);
-	aa->addChil(aaa);
-	c->addChil(ca);
-	c->addChil(cb);
-	c->addChil(cd);
-	cb->addChil(cba);
-	cb->addChil(cbb);
-*/
-
+	Node *root = Manager::getInstance()->loadGraph("D:\\qtWorkspace\\Grapgh_Viz_project\\graphs\\colored.graphml" )->createSpanningTree();
+	_coreDrawer->setGraph( Manager::getInstance()->getGraph() );
 	_coreDrawer->addRoot( root);
 	_coreDrawer->prepareTree();
 }
-
-GLfloat ctrlpoints[4][3] = {
-	{ -3.5, -3.5, 1.0}, { -3.5, -3.5, 7.0},
-	{3.5, 3.5, 7.0}, {3.5, 3.5, 1.0}};
 
 
 // Set up lighting
@@ -97,20 +64,20 @@ void CoreGLWidget::initLight2()
 
 void CoreGLWidget::initializeGL()
 {
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	//initLight();
 	//initLight2();
 
 	// Other
-	glClearColor(0,1,1,1);
+	glClearColor(1,1,1,1);
 
 	//glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	//glDepthFunc(GL_LEQUAL);
 	//glEnable(GL_ALPHA_TEST);
 	//glAlphaFunc(GL_GREATER, 0.5);
-	//glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // straight
 	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);   // premultipled
 
@@ -124,9 +91,7 @@ void CoreGLWidget::initializeGL()
 	// (minus, L2)
 
 
-	int ncl = 4;
-	glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, ncl, &ctrlpoints[0][0]);
-	glEnable(GL_MAP1_VERTEX_3);
+
 
 	int width = 400;
 	int height = 400;
@@ -175,15 +140,16 @@ void CoreGLWidget::mouseMoveEvent(QMouseEvent *event)
 	if (event->buttons() & Qt::RightButton) {
 		setXRotation(xRot + 8 * dy);
 		setYRotation(yRot + 8 * dx);
-	} else if (event->buttons() & Qt::LeftButton) {
+	}/* else if (event->buttons() & Qt::LeftButton) {
 		setXRotation(xRot + 8 * dy);
 		setZRotation(zRot + 8 * dx);
-	}
+	}*/
 	lastPos = event->pos();
 
 	GLuint glId =  faceAtPosition(lastPos);
-	qDebug() << ">>   "  << glId;
+	//qDebug() << ">>   "  << glId;
 	_coreDrawer->setSelectedNode( glId);
+	updateGL();
 
 }
 
@@ -197,25 +163,7 @@ void CoreGLWidget::resizeGL(int width, int height)
 	GLfloat x = GLfloat(width) / height;
 	glFrustum(-x, x, -1.0, 1.0, 4.0, 300.0);
 	glMatrixMode(GL_MODELVIEW);
-
-	/*
-	int side = qMin(width, height);
-	//glViewport((width - side) / 2, (height - side) / 2, side, side);
-	glViewport((width - side) / 2, (height - side) / 2, side, side);
-
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 5, 1000);
-	//glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0);
-
-	glMatrixMode(GL_MODELVIEW);*/
-
 }
-
-
-
 void CoreGLWidget::setXRotation(int angle)
 {
 	qNormalizeAngle(angle);
@@ -224,8 +172,6 @@ void CoreGLWidget::setXRotation(int angle)
 		updateGL();
 	}
 }
-//! [5]
-
 void CoreGLWidget::setYRotation(int angle)
 {
 	qNormalizeAngle(angle);
@@ -234,7 +180,6 @@ void CoreGLWidget::setYRotation(int angle)
 		updateGL();
 	}
 }
-
 void CoreGLWidget::setZRotation(int angle)
 {
 	qNormalizeAngle(angle);
@@ -260,10 +205,9 @@ void CoreGLWidget::paint()
 {
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	// ModelView to WorldView transformation
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -10.0);
+	glTranslatef(0.0, 0.0, -50.0);
 
 	//glRotatef(-35, 1.0, 0.0, 0.0);
 	//glRotatef(-15, 0.0, 0.0, 1.0);
@@ -274,63 +218,14 @@ void CoreGLWidget::paint()
 	glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
 
-
-
-	/*
-	// curva
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glLineWidth(3.0);
-	glBegin(GL_LINE_STRIP);
-	for (int i = 0; i <= 30; i++)
-		glEvalCoord1f((GLfloat) i/30.0);
-	glEnd();
-
-	// curva point
-	glPointSize(5.0);
-	glColor3f(1.0, 1.0, 0.0);
-	glBegin(GL_POINTS);
-	for (int i = 0; i < 4; i++)
-		glVertex3fv(&ctrlpoints[i][0]);
-	glEnd();
-*/
-
 	_coreDrawer->drawTree();
+	_coreDrawer->drawEdges();
 
 	//glFlush();
 
 }
 
 
-void CoreGLWidget::draw()
-{
-	static const GLfloat P1[3] = { 0.0, -1.0, +2.0 };
-	static const GLfloat P2[3] = { +1.73205081, -1.0, -1.0 };
-	static const GLfloat P3[3] = { -1.73205081, -1.0, -1.0 };
-	static const GLfloat P4[3] = { 0.0, +2.0, 0.0 };
-
-	static const GLfloat * const coords[4][3] = {
-		{ P1, P2, P3 }, { P1, P3, P4 }, { P1, P4, P2 }, { P2, P4, P3 }
-	};
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef(0.0, 0.0, -10.0);
-	glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
-	glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
-	glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
-
-
-	for (int i = 0; i < 4; ++i) {
-		glLoadName(i);
-		glBegin(GL_TRIANGLES);
-		//qglColor(faceColors[i]);
-		for (int j = 0; j < 3; ++j) {
-			glVertex3f(coords[i][j][0], coords[i][j][1],
-					   coords[i][j][2]);
-		}
-		glEnd();
-	}
-}
 
 /*
 
@@ -398,7 +293,7 @@ GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 	gluPickMatrix(GLdouble(pos.x()), GLdouble(viewport[3] - pos.y()),
 				  5.0, 5.0, viewport);
 	GLfloat x = GLfloat(width()) / height();
-	glFrustum(-x, x, -1.0, 1.0, 4.0, 15.0);
+	glFrustum(-x, x, -1.0, 1.0, 4.0, 50.0);
 	paint();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -412,7 +307,7 @@ GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 
 
 
-
+/*
 void CoreGLWidget::list_hits(GLint hits, GLuint *names)
 {
 	int i;
@@ -454,6 +349,6 @@ void CoreGLWidget::processHits(GLint hits, GLuint buffer[])
 	for (j = 0; j < numberOfNames; j++,ptr++) {
 		qDebug() << "  " << *ptr;
 	}
-}
+}*/
 
 

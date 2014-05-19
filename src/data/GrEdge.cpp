@@ -3,7 +3,8 @@
 #include <QStringListIterator>
 #include <QMapIterator>
 #include <QDebug>
-
+#include <QtOpenGL>
+#include "data/Manager.h"
 
 GrEdge::GrEdge(int id, const QString sourceId, const QString targetId, bool directed, const QString params)
 {
@@ -13,6 +14,7 @@ GrEdge::GrEdge(int id, const QString sourceId, const QString targetId, bool dire
 	_targetId	= targetId;
 
 	createParameters( params );
+	setColor();
 
 	// control output
 	//toString();
@@ -22,7 +24,13 @@ GrEdge::~GrEdge(){
 	_params.clear();
 }
 
-
+void GrEdge::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+{
+	_r = r;
+	_g = g;
+	_b = b;
+	_a = a;
+}
 void GrEdge::createParameters(const QString params)
 {
 	_params["weight"] = "1";
@@ -80,4 +88,38 @@ QString  GrEdge::getTargetId() const
 QMap< QString, QString >  GrEdge::getParams() const
 {
 	return _params;
+}
+
+void  GrEdge::draw()
+{
+	GLfloat heightCoef	= Manager::getInstance()->_heightCoef;  //(0 - _realScale of root
+
+	GLfloat ctrlpoints[4][3] = {
+		{ _sx, _sy, _srh*heightCoef+heightCoef/2}, { _sx, _sy, _srh*heightCoef*2},
+		{ _tx, _ty, _trh*heightCoef*2}, {_tx, _ty, _trh*heightCoef+heightCoef/2}};
+
+
+	int ncl = 4;
+	glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, ncl, &ctrlpoints[0][0]);
+	glEnable(GL_MAP1_VERTEX_3);
+
+
+	// curva
+
+	glColor4f(_r, _g, _b, _a);
+	glLineWidth(3.0);
+	glBegin(GL_LINE_STRIP);
+	for (int i = 0; i <= 30; i++)
+		glEvalCoord1f((GLfloat) i/30.0);
+	glEnd();
+
+	/*
+	// curva point
+	glPointSize(5.0);
+	glColor3f(1.0, 1.0, 0.0);
+	glBegin(GL_POINTS);
+	for (int i = 0; i < 4; i++)
+		glVertex3fv(&ctrlpoints[i][0]);
+	glEnd();*/
+
 }

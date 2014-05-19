@@ -1,6 +1,7 @@
 #include "layout/Cube.h"
 #include <QtOpenGL>
 #include <QDebug>
+#include "data/Manager.h"
 
 #include <GL/glu.h>
 
@@ -24,8 +25,8 @@ void Cube::drawMe() const
 
 	//glRotatef(35, 0.0, 1.0, 0.0);
 
-	double heightCoef	= 1;  //(0 - _realScale of root
-	double gapCoef		= 0.3;     //(0 - 1.0)
+	GLint heightCoef	= Manager::getInstance()->_heightCoef;  //(0 - _realScale of root
+	GLfloat gapCoef		= Manager::getInstance()->_gapCoef;     //(0 - 1.0)
 
 	glTranslated( _xpos, _ypos, 0 );
 	glTranslated(0.0, 0.0, _realHeight*heightCoef );
@@ -42,7 +43,7 @@ void Cube::drawMe() const
 
 
 
-	createCube2();
+	createCube();
 
 	glPopName();
 	glPopMatrix();
@@ -112,16 +113,16 @@ void Cube::createCube2() const{
 
 void Cube::createCube() const
 {
-
+	glScaled(0.5, 0.5, 0.5);
 	/*static const GLfloat r = 0.0f,
 			g = 0.0f,
 			b = 1.0f,
 			a = 0.2f;
 			*/
-	GLfloat r = _r,
-			   g = _g,
-			   b = _b,
-			   a = _a;
+	GLfloat r = _vr,
+			   g = _vg,
+			   b = _vb,
+			   a = _va;
 	//qDebug() <<
 	static const GLfloat vertices[12*3*3] = {
 

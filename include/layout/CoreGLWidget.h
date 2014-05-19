@@ -29,13 +29,10 @@ protected:
 
 
 	void paint();
-	void draw();
 	void initLight();
 	void initLight2();
 
 	GLuint faceAtPosition(const QPoint &pos);
-	void processHits (GLint hits, GLuint buffer[]);
-	void list_hits(GLint hits, GLuint *names);
 
 
 private:
