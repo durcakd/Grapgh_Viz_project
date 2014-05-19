@@ -118,7 +118,6 @@ void CoreDrawer::prepareEdge( GrEdge *grEdge)
 
 void CoreDrawer::setSelectedNode(GLuint glId)
 {
-
 	GLfloat a = Manager::getInstance()->getAlphaCoef();
 	GLuint key;
 	Node *node, *selected = NULL;
@@ -183,6 +182,26 @@ void CoreDrawer::setSelectedNode(GLuint glId)
 
 				}
 			}
+
+		}
+	}
+
+	// set origin colour
+	else{
+		QMapIterator<GLuint, Node*> ito(_nodes);
+		while(ito.hasNext()){
+			ito.next();
+			node = ito.value();
+			node->setVizColor( ORIGCOLOR );
+
+		}
+
+		QMapIterator< int, GrEdge* > iae(_noTreeGrEdges);
+		while(iae.hasNext()){
+			iae.next();
+			//qDebug() << " >" << ine.key();
+			GrEdge *nedge = iae.value();
+			nedge->setColor( 0.0f, 0.8f, 0.0f, a );
 
 		}
 	}

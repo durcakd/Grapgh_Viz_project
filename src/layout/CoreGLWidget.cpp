@@ -177,16 +177,6 @@ void CoreGLWidget::setZRotation(int angle)
 
 
 
-
-
-
-
-
-
-
-
-
-
 void CoreGLWidget::paint()
 {
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -212,51 +202,6 @@ void CoreGLWidget::paint()
 }
 
 
-
-/*
-
-int CoreGLWidget::faceAtPosition(const QPoint &pos)
-{
-	const int MaxSize = 1024;
-	GLuint buffer[MaxSize];
-	GLint viewport[4];
-
-	glDisable(GL_BLEND);
-	glEnable(GL_ALPHA_TEST);
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glSelectBuffer(MaxSize, buffer);
-	glRenderMode(GL_SELECT);
-
-	glInitNames();
-	glPushName(0);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluPickMatrix(GLdouble(pos.x()), GLdouble(viewport[3] - pos.y()),
-			1.0f, 1.0f, viewport);
-	GLfloat x = GLfloat(width()) / height();
-	//glFrustum(-x, x, -1.0, 1.0, 1.0, 50.0);
-	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 50);
-
-
-	paint();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-
-	GLint hits = glRenderMode(GL_RENDER);
-
-	glDisable(GL_ALPHA_TEST);
-	glEnable(GL_BLEND);
-
-	if (!hits){
-		return -1;
-	}
-	//list_hits(hits, buffer);
-	processHits(hits, buffer);
-	return buffer[3];
-}
-*/
 
 GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 {
@@ -288,53 +233,5 @@ GLuint CoreGLWidget::faceAtPosition(const QPoint &pos)
 		return -1;
 	return buffer[3];
 }
-
-
-
-
-
-/*
-void CoreGLWidget::list_hits(GLint hits, GLuint *names)
-{
-	int i;
-
-	qDebug() << " hits:  " << hits;
-
-	for (i = 0; i < hits; i++){
-		qDebug() << 	"Number: " << (GLubyte)names[i * 4] <<
-						"Min Z: " << (GLubyte)names[i * 4 + 1] <<
-						"Max Z: " << (GLubyte)names[i * 4 + 2] <<
-						"Name on stack: " << (GLubyte)names[i * 4 + 3];
-	}
-	qDebug() << "";
-}
-
-
-
-void CoreGLWidget::processHits(GLint hits, GLuint buffer[])
-{
-	unsigned int i, j;
-	GLuint names, *ptr, minZ,*ptrNames, numberOfNames;
-
-	printf ("hits = %d\n", hits);
-	ptr = (GLuint *) buffer;
-	minZ = 0xffffffff;
-	for (i = 0; i < hits; i++) {
-		names = *ptr;
-		ptr++;
-		if (*ptr < minZ) {
-			numberOfNames = names;
-			minZ = *ptr;
-			ptrNames = ptr+2;
-		}
-
-		ptr += names+2;
-	}
-	qDebug() << "The closest hit names are ";
-	ptr = ptrNames;
-	for (j = 0; j < numberOfNames; j++,ptr++) {
-		qDebug() << "  " << *ptr;
-	}
-}*/
 
 

@@ -279,6 +279,7 @@ void Node::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	_g = g;
 	_b = b;
 	_a = a;
+	setVizColor( ORIGCOLOR );
 }
 GLuint Node::getGlId() const
 {
