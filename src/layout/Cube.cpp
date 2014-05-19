@@ -6,10 +6,10 @@
 #include <GL/glu.h>
 
 Cube::Cube(GLint glId, QString name)
-	: Node(glId)
+	: Node(glId, name)
 {
 	//qDebug() << "Cube constructor";
-	_name = name;
+
 }
 
 

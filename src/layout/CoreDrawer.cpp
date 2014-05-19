@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QMapIterator>
+#include "data/Manager.h"
 
 CoreDrawer::CoreDrawer()
 {
@@ -45,18 +46,75 @@ void CoreDrawer::createNodeMap()
 void CoreDrawer::setSelectedNode(GLuint glId)
 {
 	GLuint key;
-	Node *node;
+	Node *node, *selected = NULL;
 	QMapIterator<GLuint, Node*> it(_nodes);
 	while(it.hasNext()){
 		it.next();
 		key = it.key();
 		node = it.value();
 		if(key == glId){
-			node->setVizColor( SELECTED );
+			selected = node;
 		} else {
 			node->setVizColor( ORIGCOLOR );
 		}
 	}
+	if(selected != NULL){
+		selected->setVizColor( SELECTED );
+
+		// clear edges
+
+
+		// find adj nodes
+		if(Manager::getInstance()->_selAdjNodes){
+			// clear edges
+
+			QMapIterator< int, GrEdge* > ine(_noTreeGrEdges);
+			while(ine.hasNext()){
+				ine.next();
+				qDebug() << " >" << ine.key();
+				GrEdge *nedge = ine.value();
+				nedge->setColor( 0.1f, 0.0f, 1.0f, 0.8f  );
+
+			}
+
+
+
+			// select nnodes
+			QString sid = 	selected->_name;
+			GrNode *grNode = _grNodes[sid];
+
+			QVector<int> edges = grNode->getEdges();
+			QVectorIterator<int> ie(edges);
+
+			while(ie.hasNext()){
+				int ekey = ie.next();
+
+				//qDebug() << "  <" << ekey ;
+				if(_noTreeGrEdges.find(ekey) != _noTreeGrEdges.end()){
+					GrEdge  *grEdge = _noTreeGrEdges[ekey];
+					//qDebug() << "  <<" << ekey ;
+					grEdge->setColor( 0.5f, 0.5f, 0.1f, 0.8f  );
+
+
+					QString adjId = grEdge->getSourceId();
+					if(adjId == sid) { adjId = grEdge->getTargetId(); }
+
+					GLuint adjGlId = _grNodes[adjId]->getGlId();
+					_nodes[adjGlId]->setVizColor( SELECTED2 );
+
+					// select nodes
+
+
+
+
+
+
+				}
+			}
+
+		}
+	}
+
 }
 
 

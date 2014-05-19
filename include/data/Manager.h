@@ -20,7 +20,8 @@ public:
 
 	GLint _heightCoef;//	= 1;  //(0 - _realScale of root
 	GLfloat _gapCoef;//		= 0.3;     //(0 - 1.0)
-
+	GLint _curvewidth;//	= 1;  //(0 - _realScale of root
+	bool _selAdjNodes;
 
 private:
 

@@ -12,13 +12,13 @@ class Node;
 typedef std::list< Node* > NodeList;
 
 enum { REALSCALE, MAXEDSCALE, MOSTMAXED };
-enum { ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR };
+enum { ORIGCOLOR, SELECTED, UNSELECTED, BASICCOLOR , SELECTED2};
 
 class Node
 {
 
 public:
-	Node(GLuint glId);
+	Node(GLuint glId, QString id);
 	void draw();
 	void computeLayout();
 	void addChil(Node *child);
@@ -30,6 +30,8 @@ public:
 	double getXpos() const {return _xpos;}
 	double getYpos() const {return _ypos;}
 	int		getRealHeight() const {return _realHeight; }
+
+	QString _name;
 
 protected:
 	virtual void drawMe() const = 0;
@@ -62,7 +64,7 @@ protected:
 
 	NodeList	_children;
 
-	QString _name;
+
 	GLfloat _a,_r,_g,_b;
 	GLfloat _va,_vr,_vg,_vb;
 	GLuint	_glId;

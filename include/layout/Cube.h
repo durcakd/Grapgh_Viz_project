@@ -9,7 +9,7 @@ class Cube : public Node
 {
 
 public:
-	Cube(GLint glId, QString name = "" );
+	Cube(GLint glId, QString name );
 
 protected:
 

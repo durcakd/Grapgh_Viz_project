@@ -3,10 +3,11 @@
 #include <QDebug>
 
 
-Node::Node(GLuint glId)
+Node::Node(GLuint glId, QString id)
 {
 	//qDebug() << "Node constructor";
 	_glId = glId;
+	_name = id;
 	setColor();
 	setVizColor(ORIGCOLOR);
 }
@@ -295,6 +296,11 @@ void Node::setVizColor(int colorType)
 		_vg = 0.0f;
 		_vb = 0.0f;
 		_va = _a;
+	} else if(colorType == SELECTED2){
+				_vr = 0.0f;
+				_vg = 1.0f;
+				_vb = 0.0f;
+				_va = _a;
 	} else if(colorType == BASICCOLOR){
 		_vr = 0.0f;
 		_vg = 0.0f;
